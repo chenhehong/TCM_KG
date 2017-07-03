@@ -127,23 +127,6 @@ class NeoDataGraphOpt(object):
         for rel in rels:
             relationships.append(rel)
         return relationships
-    
-    def searchInfNode(self,node):
-        #返回与节点相关的所有关系，不管方向是向外还是向内
-        AllRelation=self.graph.match(node, None, None, True, None)
-        #返回指向外面的关系
-        outerRelation=self.graph.match(node, None, None, False, None)
-        #返回指向里面的关系
-        innerRelation=self.graph.match(None, None, node, False, None)
-        #对于得到的关系进行操作
-        for rel in AllRelation:
-            #获得关系的标签
-            label=rel.type()
-            #获得关系的所有属性，生成字典
-            properties=dict(rel)
-            #获得属性的数量
-            ProNum=len(rel)
-        return None
         
     '''
     update or delete elements from graph
@@ -427,6 +410,11 @@ if __name__ == '__main__':
     print("directly excute neoDataGraphOpt...")
     #初始化,输入数据库帐号密码
     neoObj = NeoDataGraphOpt("neo4j","123456")
+    a = neoObj.graph.data("MATCH (s1:symptom)-[r1:symptom2medicine]-(m1:medicine) WHERE m1.name='桂枝' with s1,r1,m1 MATCH (s2:symptom)-[r2:symptom2medicine]-(m2:medicine) "
+                          "WHERE m2.name='麻黄' and s2=s1 return s2,r1,r2,m1,m2 order by r1.weight+r2.weight DESC")
+    neoObj.graph.match()
+    for i in a:
+        print(i['s2']['name'])
     #创建节点,返回节点
     #node1=neoObj.createNode([u"Person"], {u'name':u'Jerr'})
     #把节点、关系、子图加入数据库，自动过滤掉已存在的，无返回值
