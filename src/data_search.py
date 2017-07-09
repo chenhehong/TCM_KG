@@ -72,6 +72,6 @@ if __name__ =='__main__':
     symptoms = dataSerach.get_symptom_from_medicine(['麻黄','当归'])
     for symptom in symptoms:
         print '症状：'+symptom[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8')+' 权重：'+str(symptom[DataSearch.SEARCHWEIGHTKEY])
-    # medicines = dataSerach.get_medicine_from_symptom(['头痛','发热'])
-    # for medicine in medicines:
-    #     print '中药：'+medicine[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8')+' 权重：'+str(medicine[DataSearch.SEARCHWEIGHTKEY])
+    medicines = dataSerach.get_medicine_from_symptom(['头痛','发热'])
+    for medicine in medicines:
+        print '中药：'+medicine[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8')+' 权重：'+str(medicine[DataSearch.SEARCHWEIGHTKEY])
