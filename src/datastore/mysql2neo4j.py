@@ -18,6 +18,9 @@ class Mysql2Neo4j(object):
     PULSE2MEDICINETAG = "pulse2medicine"
     TONGUETAI2MEDICINETAG = "tongueTai2medicine"
     TONGUEZHI2MEDICINETAG = "tongueZhi2medicine"
+    SYMPTOM2TONGUEZHITAG = "symptom2tongueZhi"
+    SYMPTOM2TONGUETAITAG = "symptom2tongueTai"
+    SYMPTOM2PULSETAG = "symptom2pulse"
     RELATIONWEIGHT = 'weight'
     RELATIONTID = 'tid'
 
@@ -166,9 +169,12 @@ class Mysql2Neo4j(object):
                             relation = relations[0]
                             tids = relation[self.RELATIONTID]
                             weight = relation[self.RELATIONWEIGHT]
-                            tids.append(tid)
-                            weight += 1
-                            neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,properties={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
+                            # tids.append(tid)
+                            # weight += 1
+                            # neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,properties={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
+                            ntids = list(set(tids))
+                            nweight = len(ntids)
+                            neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,properties={self.RELATIONTID: ntids, self.RELATIONWEIGHT: nweight})
                         else:
                             tids = [tid]
                             weight = 1
@@ -290,6 +296,136 @@ class Mysql2Neo4j(object):
                         neoDb.constructSubGraphInDB(rel)
         mysqlDb.close()
 
+    def store_symptom2tonguezhi(self):
+        mysqlDb = TcmMysql()
+        neoDb = NeoDataGraphOpt()
+        treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,tongueZhiId')
+        for treamentUnit in treamentMysql:
+            syptomeIds = treamentUnit[1].split(",")
+            tid = int(treamentUnit[0])
+            tongueZhiId = treamentUnit[2]
+            for syptomeId in syptomeIds:
+                tongueZhiNodes = neoDb.selectNodeElementsFromDB(self.TONGUEZHITAG, condition=[],
+                                                               properties={'id': int(tongueZhiId)})
+                syptomeNodes = neoDb.selectNodeElementsFromDB(self.SYMPTOMTAG, condition=[],
+                                                              properties={'id': int(syptomeId)})
+                if (len(tongueZhiNodes) > 0 and len(syptomeNodes) > 0):
+                    tongueZhiNode = tongueZhiNodes[0]
+                    syptomeNode = syptomeNodes[0]
+                    print(tongueZhiNode['name'])
+                    print(syptomeNode['name'])
+                    print("输出症状%s和舌质%s的关系:%d" % (
+                    syptomeNode['name'].encode('utf8'), tongueZhiNode['name'].encode('utf8'), tid))
+                    # 如果节点之间已经存在关系了,则权重加1,否则创建关系
+                    relations = neoDb.selectRelationshipsFromDB(syptomeNode, self.SYMPTOM2TONGUEZHITAG,
+                                                                tongueZhiNode)
+                    if (len(relations) > 0):
+                        print("更新症状%s和舌质%s的关系" % (
+                        syptomeNode['name'].encode('utf8'), tongueZhiNode['name'].encode('utf8')))
+                        relation = relations[0]
+                        tids = relation[self.RELATIONTID]
+                        weight = relation[self.RELATIONWEIGHT]
+                        tids.append(tid)
+                        weight += 1
+                        neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,
+                                                      properties={self.RELATIONTID: tids,
+                                                                  self.RELATIONWEIGHT: weight})
+                    else:
+                        tids = [tid]
+                        weight = 1
+                        rel = neoDb.createRelationship(self.SYMPTOM2TONGUEZHITAG, syptomeNode, tongueZhiNode,
+                                                       propertyDic={self.RELATIONTID: tids,
+                                                                    self.RELATIONWEIGHT: weight})
+                        neoDb.constructSubGraphInDB(rel)
+        mysqlDb.close()
+
+    def store_symptom2tonguetai(self):
+        mysqlDb = TcmMysql()
+        neoDb = NeoDataGraphOpt()
+        treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,tongueTaiId')
+        for treamentUnit in treamentMysql:
+            syptomeIds = treamentUnit[1].split(",")
+            tid = int(treamentUnit[0])
+            tongueTaiId = treamentUnit[2]
+            for syptomeId in syptomeIds:
+                tongueTaiNodes = neoDb.selectNodeElementsFromDB(self.TONGUETAITAG, condition=[],
+                                                               properties={'id': int(tongueTaiId)})
+                syptomeNodes = neoDb.selectNodeElementsFromDB(self.SYMPTOMTAG, condition=[],
+                                                              properties={'id': int(syptomeId)})
+                if (len(tongueTaiNodes) > 0 and len(syptomeNodes) > 0):
+                    tongueTaiNode = tongueTaiNodes[0]
+                    syptomeNode = syptomeNodes[0]
+                    print(tongueTaiNode['name'])
+                    print(syptomeNode['name'])
+                    print("输出症状%s和舌苔%s的关系:%d" % (
+                    syptomeNode['name'].encode('utf8'), tongueTaiNode['name'].encode('utf8'), tid))
+                    # 如果节点之间已经存在关系了,则权重加1,否则创建关系
+                    relations = neoDb.selectRelationshipsFromDB(syptomeNode, self.SYMPTOM2TONGUETAITAG,
+                                                                tongueTaiNode)
+                    if (len(relations) > 0):
+                        print("更新症状%s和舌苔%s的关系" % (
+                        syptomeNode['name'].encode('utf8'), tongueTaiNode['name'].encode('utf8')))
+                        relation = relations[0]
+                        tids = relation[self.RELATIONTID]
+                        weight = relation[self.RELATIONWEIGHT]
+                        tids.append(tid)
+                        weight += 1
+                        neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,
+                                                      properties={self.RELATIONTID: tids,
+                                                                  self.RELATIONWEIGHT: weight})
+                    else:
+                        tids = [tid]
+                        weight = 1
+                        rel = neoDb.createRelationship(self.SYMPTOM2TONGUETAITAG, syptomeNode, tongueTaiNode,
+                                                       propertyDic={self.RELATIONTID: tids,
+                                                                    self.RELATIONWEIGHT: weight})
+                        neoDb.constructSubGraphInDB(rel)
+        mysqlDb.close()
+
+
+    def store_symptom2pulse(self):
+        mysqlDb = TcmMysql()
+        neoDb = NeoDataGraphOpt()
+        treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,pulseId')
+        for treamentUnit in treamentMysql:
+            syptomeIds = treamentUnit[1].split(",")
+            tid = int(treamentUnit[0])
+            pulseId = treamentUnit[2]
+            for syptomeId in syptomeIds:
+                pulseNodes = neoDb.selectNodeElementsFromDB(self.PULSETAG, condition=[],
+                                                               properties={'id': int(pulseId)})
+                syptomeNodes = neoDb.selectNodeElementsFromDB(self.SYMPTOMTAG, condition=[],
+                                                              properties={'id': int(syptomeId)})
+                if (len(pulseNodes) > 0 and len(syptomeNodes) > 0):
+                    pulseNode = pulseNodes[0]
+                    syptomeNode = syptomeNodes[0]
+                    print(pulseNode['name'])
+                    print(syptomeNode['name'])
+                    print("输出症状%s和脉搏%s的关系:%d" % (
+                    syptomeNode['name'].encode('utf8'), pulseNode['name'].encode('utf8'), tid))
+                    # 如果节点之间已经存在关系了,则权重加1,否则创建关系
+                    relations = neoDb.selectRelationshipsFromDB(syptomeNode, self.SYMPTOM2PULSETAG,
+                                                                pulseNode)
+                    if (len(relations) > 0):
+                        print("更新症状%s和脉搏%s的关系" % (
+                        syptomeNode['name'].encode('utf8'), pulseNode['name'].encode('utf8')))
+                        relation = relations[0]
+                        tids = relation[self.RELATIONTID]
+                        weight = relation[self.RELATIONWEIGHT]
+                        tids.append(tid)
+                        weight += 1
+                        neoDb.updateKeyInRelationship(relation, updateProperty=True, relationshipName=None,
+                                                      properties={self.RELATIONTID: tids,
+                                                                  self.RELATIONWEIGHT: weight})
+                    else:
+                        tids = [tid]
+                        weight = 1
+                        rel = neoDb.createRelationship(self.SYMPTOM2PULSETAG, syptomeNode, pulseNode,
+                                                       propertyDic={self.RELATIONTID: tids,
+                                                                    self.RELATIONWEIGHT: weight})
+                        neoDb.constructSubGraphInDB(rel)
+        mysqlDb.close()
+
     def mysql2neo4j(self):
         print ("开始创建图谱...")
         # self.store_medicine()
@@ -303,6 +439,9 @@ class Mysql2Neo4j(object):
         # self.store_pulse2medicine()
         # self.store_tonguetai2medicine()
         # self.store_tonguezhi2medicine()
+        # self.store_symptom2tonguezhi()
+        # self.store_symptom2tonguetai()
+        # self.store_symptom2pulse()
 
 if __name__ == '__main__':
     print("directly excute mysql2neo4j...")
