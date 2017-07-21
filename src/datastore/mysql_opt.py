@@ -2,12 +2,11 @@
 # -*- coding: utf-8 -*-
 
 import MySQLdb
-
-_dbconfig = {'host':'222.201.132.51','port':3306,'user':'chh','passwd':'123456scut','dbname':'chh_tcmdata','charset':'utf8'}
+import mysql_config
 
 class TcmMysql(object):
     """docstring for mysql"""
-    def __init__(self, dbconfig=_dbconfig):
+    def __init__(self, dbconfig=mysql_config._dbconfig):
         self.host = dbconfig['host']
         self.port = dbconfig['port']
         self.user = dbconfig['user']

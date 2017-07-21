@@ -1,9 +1,9 @@
 # -*- coding:utf-8 -*-
 import sys
-import os
+
 current_working_directory = "D:\Python\TCM_KG"
 sys.path.append(current_working_directory)
-from src.datastore.graph.neo_datagraph_opt import NeoDataGraphOpt
+from src.datastore.neo_datagraph_opt import NeoDataGraphOpt
 from src.datastore.mysql2neo4j import Mysql2Neo4j
 from src.list_util import ListUtil
 from operator import itemgetter

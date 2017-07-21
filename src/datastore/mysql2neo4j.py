@@ -3,7 +3,7 @@
 将mysql中的中医结构化数据存入neo4j数据库
 '''
 from src.datastore.mysql_opt import TcmMysql
-from src.datastore.graph.neo_datagraph_opt import NeoDataGraphOpt
+from src.datastore.neo_datagraph_opt import NeoDataGraphOpt
 
 class Mysql2Neo4j(object):
 

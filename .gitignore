@@ -90,3 +90,4 @@ ENV/
 
 #个人添加
 .idea/
+mysql_config.py
