@@ -4,7 +4,7 @@
 import MySQLdb
 import mysql_config
 
-class TcmMysql(object):
+class MysqlOpt(object):
     """docstring for mysql"""
     def __init__(self, dbconfig=mysql_config._dbconfig):
         self.host = dbconfig['host']
@@ -98,7 +98,7 @@ class TcmMysql(object):
 
 if __name__ == '__main__':
 
-    db = TcmMysql()
+    db = MysqlOpt()
     print(db.select('medicine'))
     # print db.select('msg','id,ip,domain','id>2')
     # print db.affected_num()

@@ -19,7 +19,7 @@ _password = '123456'
 # _service_ip = 'localhost:7474'
 _service_ip = '127.0.0.1:7474'
 
-class NeoDataGraphOpt(object):
+class Neo4jOpt(object):
     def __init__(self, user=_user, password=_password, service_ip = _service_ip):
         self.user = user;
         self.password = password
@@ -409,7 +409,7 @@ if __name__ == '__main__':
     
     print("directly excute neoDataGraphOpt...")
     #初始化,输入数据库帐号密码
-    neoObj = NeoDataGraphOpt("neo4j","123456")
+    neoObj = Neo4jOpt("neo4j", "123456")
     a = neoObj.graph.data("MATCH (s1:symptom)-[r1:symptom2medicine]-(m1:medicine) WHERE m1.name='桂枝' with s1,r1,m1 MATCH (s2:symptom)-[r2:symptom2medicine]-(m2:medicine) "
                           "WHERE m2.name='麻黄' and s2=s1 return s2,r1,r2,m1,m2 order by r1.weight+r2.weight DESC")
     neoObj.graph.match()

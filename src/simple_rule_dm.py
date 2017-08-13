@@ -3,193 +3,118 @@ import sys
 
 current_working_directory = "D:\Python\TCM_KG"
 sys.path.append(current_working_directory)
-from src.datastore.neo_datagraph_opt import NeoDataGraphOpt
+from src.datastore.neo4j_opt import Neo4jOpt
 from src.datastore.mysql2neo4j import Mysql2Neo4j
 from src.list_util import ListUtil
 from operator import itemgetter
 import copy
+from src.base_data_query import BaseDataQuery
 
-class DataSearch(object):
+class SimpleRuleDM(object):
 
-    SEARCHVALUEKEY = 'value'
-    SEARCHWEIGHTKEY = 'weight'
-    SEARCHIDSKEY = 'ids'
     resultLimit = 5
     TIDS = 'tids'
     NAME = 'name'
     CONFIDENCE = "confidence"
     ID = 'id'
 
-    def get_symptom_from_medicine(self,medicine):
-        return self.get_public_link_node(Mysql2Neo4j.SYMPTOMTAG, Mysql2Neo4j.SYMPTOM2MEDICINETAG, Mysql2Neo4j.MEDICINETAG, 'name',medicine)
-
-    def get_tonguezhi_from_medicine(self,medicine):
-        return self.get_public_link_node(Mysql2Neo4j.TONGUEZHITAG, Mysql2Neo4j.TONGUEZHI2MEDICINETAG, Mysql2Neo4j.MEDICINETAG, 'name',medicine)
-
-    def get_tonguetai_from_medicine(self, medicine):
-        return self.get_public_link_node(Mysql2Neo4j.TONGUETAITAG, Mysql2Neo4j.TONGUETAI2MEDICINETAG, Mysql2Neo4j.MEDICINETAG, 'name',medicine)
-
-    def get_pulse_from_medicine(self,medicine):
-        return self.get_public_link_node(Mysql2Neo4j.PULSETAG, Mysql2Neo4j.PULSE2MEDICINETAG, Mysql2Neo4j.MEDICINETAG, 'name',medicine)
-
-    def get_medicine_from_symptom(self,syptom):
-        return self.get_public_link_node(Mysql2Neo4j.MEDICINETAG,Mysql2Neo4j.SYMPTOM2MEDICINETAG,Mysql2Neo4j.SYMPTOMTAG,'name',syptom,firstArrow='<-',secondArrow='-')
-
-    def get_medicine_from_tonguezhi(self,tonguezhi):
-        return self.get_public_link_node(Mysql2Neo4j.MEDICINETAG,Mysql2Neo4j.TONGUEZHI2MEDICINETAG,Mysql2Neo4j.TONGUEZHITAG,'name',tonguezhi,firstArrow='<-',secondArrow='-')
-
-    def get_medicine_from_tonguetai(self,tonguetai):
-        return self.get_public_link_node(Mysql2Neo4j.MEDICINETAG,Mysql2Neo4j.TONGUETAI2MEDICINETAG,Mysql2Neo4j.TONGUETAITAG,'name',tonguetai,firstArrow='<-',secondArrow='-')
-
-    def get_medicine_from_pulse(self,pulse):
-        return self.get_public_link_node(Mysql2Neo4j.MEDICINETAG,Mysql2Neo4j.PULSE2MEDICINETAG,Mysql2Neo4j.PULSETAG,'name',pulse,firstArrow='<-',secondArrow='-')
-
-    def get_public_link_node(self,startNodeTag,relationTag,endNodeTag,endNodeKey,endNodeValue,relationOrderKey = 'weight',seq = 'DESC',firstArrow='-',secondArrow='->'):
-        if len(endNodeValue)==1:
-            cql = 'MATCH (s1:'+startNodeTag+')'+firstArrow+'[r1:'+relationTag+']'+secondArrow+'(e1:'+endNodeTag+') WHERE e1.'+endNodeKey+'={1} return s1 as '\
-                  +self.SEARCHVALUEKEY+',r1.'+Mysql2Neo4j.RELATIONWEIGHT+' as '+self.SEARCHWEIGHTKEY+',r1.'+Mysql2Neo4j.RELATIONTID+' as '+self.SEARCHIDSKEY+' order by r1.'+relationOrderKey+' '+seq
-            parameters = {"1":endNodeValue[0]}
-            # print cql
-            # print parameters
-            neoDb = NeoDataGraphOpt()
-            return neoDb.graph.data(cql,parameters)
-        i = 0
-        cql = ''
-        parameters = {}
-        for value in endNodeValue:
-            i+=1
-            parameters[str(i)] = value
-            s = 's'+str(i)
-            ssub = 's'+str(i-1)
-            r = 'r'+str(i)
-            e = 'e'+str(i)
-            match = 'MATCH ('+s+':'+startNodeTag+')'+firstArrow+'['+r+':'+relationTag+' ]'+secondArrow+'('+e+':'+endNodeTag+') '
-            if(i==1):
-                cql+=match
-                cql+='WHERE '+e+'.'+endNodeKey+'={'+str(i)+'} with '+s+','+r+' '
-            elif(i<len(endNodeValue)):
-                cql+=match
-                cql+='WHERE '+e+'.'+endNodeKey+'={'+str(i)+'} and '+s+'='+ssub
-                rTotal = ''
-                flag = False
-                for j in range(i):
-                    if flag:
-                        rTotal+=','
-                    else:
-                        flag=True
-                    rTotal+='r'+str(j+1)
-                cql+=' with '+s+','+rTotal+' '
-            elif(i==len(endNodeValue)):
-                cql+=match
-                cql += 'WHERE ' + e + '.' + endNodeKey + '={' + str(i) + '} and ' + s + '=' + ssub+' '
-                w = ''
-                flag = False
-                for j in range(i):
-                    if flag:
-                        w+='+'
-                    else:
-                        flag = True
-                    w+='r'+str(j+1)+'.'+relationOrderKey
-                tidReturn = ''
-                for j in range(i):
-                    tidReturn=',r'+str(j+1)+'.'+Mysql2Neo4j.RELATIONTID+' as '+self.SEARCHIDSKEY+str(j+1)+tidReturn
-                cql +='return '+s+' as '+self.SEARCHVALUEKEY+','+w+' as '+self.SEARCHWEIGHTKEY+tidReturn+' order by '+w+' '+seq
-        # print cql
-        # print parameters
-        neoDb = NeoDataGraphOpt()
-        return neoDb.graph.data(cql, parameters)
-
     def input_single_medicine(self,medicine):
+        baseDataQuery = BaseDataQuery()
         list = []
         list.append(medicine)
-        symptoms = self.get_symptom_from_medicine(list)
+        symptoms = baseDataQuery.get_symptom_from_medicine(list)
         i = 1
         for symptom in symptoms:
             if i>self.resultLimit:
                 break
-            print '症状：' + symptom[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(symptom[DataSearch.SEARCHWEIGHTKEY])
+            print '症状：' + symptom[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(symptom[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
-        tongueZhis = dataSerach.get_tonguezhi_from_medicine(list)
+        tongueZhis = baseDataQuery.get_tonguezhi_from_medicine(list)
         i = 1
         for tongueZhi in tongueZhis:
             if i>self.resultLimit:
                 break
-            print '舌质：'+tongueZhi[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueZhi[DataSearch.SEARCHWEIGHTKEY])
+            print '舌质：'+tongueZhi[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueZhi[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
-        tongueTais = dataSerach.get_tonguetai_from_medicine(list)
+        tongueTais = baseDataQuery.get_tonguetai_from_medicine(list)
         i = 1
         for tongueTai in tongueTais:
             if i>self.resultLimit:
                 break
-            print '舌苔：'+tongueTai[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueTai[DataSearch.SEARCHWEIGHTKEY])
+            print '舌苔：'+tongueTai[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueTai[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
-        pulses = dataSerach.get_pulse_from_medicine(list)
+        pulses = baseDataQuery.get_pulse_from_medicine(list)
         i = 1
         for pulse in pulses:
             if i>self.resultLimit:
                 break
-            print '脉搏：'+pulse[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(pulse[DataSearch.SEARCHWEIGHTKEY])
+            print '脉搏：'+pulse[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(pulse[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
 
     def input_single_syptom(self, symptom):
+        baseDataQuery = BaseDataQuery()
         list = []
         list.append(symptom)
-        medicines = self.get_medicine_from_symptom(list)
+        medicines = baseDataQuery.get_medicine_from_symptom(list)
         i = 1
         for element in medicines:
             if i > self.resultLimit:
                 break
-            print '中药：' + element[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[DataSearch.SEARCHWEIGHTKEY])
+            print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
 
     def input_single_tonguezhi(self,tonguezhi):
+        baseDataQuery = BaseDataQuery()
         list = []
         list.append(tonguezhi)
-        medicines = self.get_medicine_from_tonguezhi(list)
+        medicines = baseDataQuery.get_medicine_from_tonguezhi(list)
         i = 1
         for medicine in medicines:
             if i > self.resultLimit:
                 break
-            print '中药：' + medicine[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(medicine[DataSearch.SEARCHWEIGHTKEY])
+            print '中药：' + medicine[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(medicine[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
 
     def input_single_tonguetai(self, tonguetai):
+        baseDataQuery = BaseDataQuery()
         list = []
         list.append(tonguetai)
-        medicines = self.get_medicine_from_tonguetai(list)
+        medicines = baseDataQuery.get_medicine_from_tonguetai(list)
         i = 1
         for element in medicines:
             if i > self.resultLimit:
                 break
-            print '中药：' + element[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[DataSearch.SEARCHWEIGHTKEY])
+            print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
 
     def input_single_pulse(self, pulse):
+        baseDataQuery = BaseDataQuery()
         list = []
         list.append(pulse)
-        medicines = self.get_medicine_from_pulse(list)
+        medicines = baseDataQuery.get_medicine_from_pulse(list)
         i = 1
         for element in medicines:
             if i > self.resultLimit:
                 break
-            print '中药：' + element[DataSearch.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[DataSearch.SEARCHWEIGHTKEY])
+            print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
 
     def input_multiple_medicine(self,medicine):
+        baseDataQuery = BaseDataQuery()
         IDS = 'ids'
         NAME = 'name'
         medicineLenth = len(medicine)
-        symptoms = self.get_symptom_from_medicine(medicine)
+        symptoms = baseDataQuery.get_symptom_from_medicine(medicine)
         symptomsFilter = []
         for e in symptoms:
             tidlists = []
             for i in range(medicineLenth):
-                tidlists.append(e[self.SEARCHIDSKEY+str(i+1)])
+                tidlists.append(e[BaseDataQuery.SEARCHIDSKEY+str(i+1)])
             intersectList = ListUtil.list_intersect(tidlists)
             if len(intersectList)>0:
                 new = {}
                 new[IDS] = intersectList
-                new[NAME] = e[self.SEARCHVALUEKEY]['name']
+                new[NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
                 symptomsFilter.append(new)
 #       获取中药组合为前提时的事件数,计算置信度要用
         totleListId = []
@@ -199,43 +124,43 @@ class DataSearch(object):
         totleCount = len(mergeList)
         print(mergeList)
 
-        tongueZhis = self.get_tonguezhi_from_medicine(medicine)
+        tongueZhis = baseDataQuery.get_tonguezhi_from_medicine(medicine)
         tongueZhisFilter = []
         for e in tongueZhis:
             tidlists = []
             for i in range(medicineLenth):
-                tidlists.append(e[self.SEARCHIDSKEY+str(i+1)])
+                tidlists.append(e[BaseDataQuery.SEARCHIDSKEY+str(i+1)])
             intersectList = ListUtil.list_intersect(tidlists)
             if len(intersectList)>0:
                 new = {}
                 new[IDS] = intersectList
-                new[NAME] = e[self.SEARCHVALUEKEY]['name']
+                new[NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
                 tongueZhisFilter.append(new)
 
-        tongueTais = self.get_tonguetai_from_medicine(medicine)
+        tongueTais = baseDataQuery.get_tonguetai_from_medicine(medicine)
         tongueTaisFilter = []
         for e in tongueTais:
             tidlists = []
             for i in range(medicineLenth):
-                tidlists.append(e[self.SEARCHIDSKEY+str(i+1)])
+                tidlists.append(e[BaseDataQuery.SEARCHIDSKEY+str(i+1)])
             intersectList = ListUtil.list_intersect(tidlists)
             if len(intersectList)>0:
                 new = {}
                 new[IDS] = intersectList
-                new[NAME] = e[self.SEARCHVALUEKEY]['name']
+                new[NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
                 tongueTaisFilter.append(new)
 
-        pulses = self.get_pulse_from_medicine(medicine)
+        pulses = baseDataQuery.get_pulse_from_medicine(medicine)
         pulsesFilter = []
         for e in pulses:
             tidlists = []
             for i in range(medicineLenth):
-                tidlists.append(e[self.SEARCHIDSKEY+str(i+1)])
+                tidlists.append(e[BaseDataQuery.SEARCHIDSKEY+str(i+1)])
             intersectList = ListUtil.list_intersect(tidlists)
             if len(intersectList)>0:
                 new = {}
                 new[IDS] = intersectList
-                new[NAME] = e[self.SEARCHVALUEKEY]['name']
+                new[NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
                 pulsesFilter.append(new)
         combineList = []
         for sy in symptomsFilter:
@@ -274,6 +199,7 @@ class DataSearch(object):
 
     # 输入组合中医症状、舌脉，模型输出最相关的中药组合名称
     def input_multiple_syptomes(self,symptomList,tongueZhi,tongueTai,pulse,support=1):
+        baseDataQuery = BaseDataQuery()
         tongueZhiList = []
         tongueZhiList.append(tongueZhi)
         tongueTaiList = []
@@ -281,45 +207,45 @@ class DataSearch(object):
         pulseList = []
         pulseList.append(pulse)
         symptomLenth = len(symptomList)
-        medicines = self.get_medicine_from_symptom(symptomList)
+        medicines = baseDataQuery.get_medicine_from_symptom(symptomList)
         symptomMedicines = []
         for e in medicines:
             tidlists = []
             if symptomLenth>1:
                 for i in range(symptomLenth):
-                    tidlists.append(e[self.SEARCHIDSKEY + str(i + 1)])
+                    tidlists.append(e[BaseDataQuery.SEARCHIDSKEY + str(i + 1)])
                 intersectList = ListUtil.list_intersect(tidlists)
             else:
-                intersectList = e[self.SEARCHIDSKEY]
+                intersectList = e[BaseDataQuery.SEARCHIDSKEY]
             if len(intersectList) > 0:
                 new = {}
                 new[self.TIDS] = intersectList
-                new[self.NAME] = e[self.SEARCHVALUEKEY]['name']
-                new[self.ID]=e[self.SEARCHVALUEKEY]['id']
+                new[self.NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
+                new[self.ID]=e[BaseDataQuery.SEARCHVALUEKEY]['id']
                 symptomMedicines.append(new)
-        medicines = self.get_medicine_from_tonguezhi(tongueZhiList)
+        medicines = baseDataQuery.get_medicine_from_tonguezhi(tongueZhiList)
         tongueZhiMedicines = []
         for e in medicines:
             new = {}
-            new[self.TIDS] = e[self.SEARCHIDSKEY]
-            new[self.NAME] = e[self.SEARCHVALUEKEY]['name']
-            new[self.ID]=e[self.SEARCHVALUEKEY]['id']
+            new[self.TIDS] = e[BaseDataQuery.SEARCHIDSKEY]
+            new[self.NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
+            new[self.ID]=e[BaseDataQuery.SEARCHVALUEKEY]['id']
             tongueZhiMedicines.append(new)
-        medicines = self.get_medicine_from_tonguetai(tongueTaiList)
+        medicines = baseDataQuery.get_medicine_from_tonguetai(tongueTaiList)
         tongueTaiMedicines = []
         for e in medicines:
             new = {}
-            new[self.TIDS] = e[self.SEARCHIDSKEY]
-            new[self.NAME] = e[self.SEARCHVALUEKEY]['name']
-            new[self.ID]=e[self.SEARCHVALUEKEY]['id']
+            new[self.TIDS] = e[BaseDataQuery.SEARCHIDSKEY]
+            new[self.NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
+            new[self.ID]=e[BaseDataQuery.SEARCHVALUEKEY]['id']
             tongueTaiMedicines.append(new)
-        medicines = self.get_medicine_from_pulse(pulseList)
+        medicines = baseDataQuery.get_medicine_from_pulse(pulseList)
         pulseMedicines = []
         for e in medicines:
             new = {}
-            new[self.TIDS] = e[self.SEARCHIDSKEY]
-            new[self.NAME] = e[self.SEARCHVALUEKEY]['name']
-            new[self.ID]=e[self.SEARCHVALUEKEY]['id']
+            new[self.TIDS] = e[BaseDataQuery.SEARCHIDSKEY]
+            new[self.NAME] = e[BaseDataQuery.SEARCHVALUEKEY]['name']
+            new[self.ID]=e[BaseDataQuery.SEARCHVALUEKEY]['id']
             pulseMedicines.append(new)
         freItemList = []
         for sm in symptomMedicines:
@@ -450,7 +376,7 @@ class DataSearch(object):
 
     def is_symptom_with_tonguezhi(self,symptom,tonguezhi):
         cql = 'MATCH (s:' + Mysql2Neo4j.SYMPTOMTAG + ')-[r]->(e:' + Mysql2Neo4j.TONGUEZHITAG + ") WHERE s.name='"+symptom+"' and e.name='"+tonguezhi+"' return r"
-        neoDb = NeoDataGraphOpt()
+        neoDb = Neo4jOpt()
         result = neoDb.graph.data(cql)
         if len(result)>0:
             print "存在"
@@ -460,7 +386,7 @@ class DataSearch(object):
 
     def is_symptom_with_tonguetai(self, symptom, tonguetai):
         cql = 'MATCH (s:' + Mysql2Neo4j.SYMPTOMTAG + ')-[r]->(e:' + Mysql2Neo4j.TONGUETAITAG + ") WHERE s.name='"+symptom+"' and e.name='" + tonguetai + "' return r"
-        neoDb = NeoDataGraphOpt()
+        neoDb = Neo4jOpt()
         result = neoDb.graph.data(cql)
         if len(result)>0:
             print "存在"
@@ -470,7 +396,7 @@ class DataSearch(object):
 
     def is_symptom_with_pulse(self, symptom, pulse):
         cql = 'MATCH (s:' + Mysql2Neo4j.SYMPTOMTAG + ')-[r]->(e:' + Mysql2Neo4j.PULSETAG + ") WHERE s.name='"+symptom+"' and e.name='" + pulse + "' return r"
-        neoDb = NeoDataGraphOpt()
+        neoDb = Neo4jOpt()
         result = neoDb.graph.data(cql)
         if len(result)>0:
             print "存在"
@@ -479,7 +405,7 @@ class DataSearch(object):
 
 
 if __name__ =='__main__':
-    dataSerach = DataSearch()
+    simpleRuleDM = SimpleRuleDM()
     # tagId = int(sys.argv[1])
     # print tagId
     # print sys.argv[2]
@@ -498,13 +424,13 @@ if __name__ =='__main__':
     #     dataSerach.input_single_tonguetai(sys.argv[2])
     # if tagId==6:
     #     dataSerach.input_single_pulse(sys.argv[2])
-    # dataSerach.input_single_medicine('当归')
-    # dataSerach.input_single_tonguezhi('舌质淡')
-    # dataSerach.input_single_tonguetai('苔黄')
-    # dataSerach.input_single_syptom('头痛')
-    # dataSerach.input_single_pulse('弦滑')
-    # dataSerach.input_multiple_medicine(['当归','麻黄'])
-    # dataSerach.is_symptom_with_tonguezhi("不思饮食","淡")
-    # dataSerach.is_symptom_with_tonguetai("胃脘疼痛","厚腻")
-    # dataSerach.is_symptom_with_pulse("脘腹满闷","滑")
-    dataSerach.input_multiple_syptomes(['头痛'],'红','苔黄','弦滑')
+    simpleRuleDM.input_single_medicine('当归')
+    simpleRuleDM.input_single_tonguezhi('舌质淡')
+    simpleRuleDM.input_single_tonguetai('苔黄')
+    simpleRuleDM.input_single_syptom('头痛')
+    simpleRuleDM.input_single_pulse('弦滑')
+    simpleRuleDM.input_multiple_medicine(['当归', '麻黄'])
+    simpleRuleDM.is_symptom_with_tonguezhi("不思饮食", "淡")
+    simpleRuleDM.is_symptom_with_tonguetai("胃脘疼痛", "厚腻")
+    simpleRuleDM.is_symptom_with_pulse("脘腹满闷", "滑")
+    simpleRuleDM.input_multiple_syptomes(['头痛'], '红', '苔黄', '弦滑')

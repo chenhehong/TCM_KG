@@ -2,8 +2,8 @@
 '''
 将mysql中的中医结构化数据存入neo4j数据库
 '''
-from src.datastore.mysql_opt import TcmMysql
-from src.datastore.neo_datagraph_opt import NeoDataGraphOpt
+from src.datastore.mysql_opt import MysqlOpt
+from src.datastore.neo4j_opt import Neo4jOpt
 
 class Mysql2Neo4j(object):
 
@@ -25,8 +25,8 @@ class Mysql2Neo4j(object):
     RELATIONTID = 'tid'
 
     def store_medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的medicine节点以及和其有关联的关系
         medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG)
         neoDb.deleteNodesFromDB(medicineNodes)
@@ -38,8 +38,8 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_symptom(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的symptom节点以及和其有关联的关系
         symptomNodes = neoDb.selectNodeElementsFromDB(self.SYMPTOMTAG)
         neoDb.deleteNodesFromDB(symptomNodes)
@@ -51,8 +51,8 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_desease(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的disease节点以及和其有关联的关系
         diseaseNodes = neoDb.selectNodeElementsFromDB(self.DISEASETAG)
         neoDb.deleteNodesFromDB(diseaseNodes)
@@ -64,8 +64,8 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_pulse(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的pulse节点以及和其有关联的关系
         pulseNodes = neoDb.selectNodeElementsFromDB(self.PULSETAG)
         neoDb.deleteNodesFromDB(pulseNodes)
@@ -77,12 +77,12 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_tongue_tai(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的tongueTai节点以及和其有关联的关系
         taongueTaiNodes = neoDb.selectNodeElementsFromDB(self.TONGUETAITAG)
         neoDb.deleteNodesFromDB(taongueTaiNodes)
-        tongueTaiMysql = mysqlDb.select('tongue_tai')
+        tongueTaiMysql = mysqlDb.select('tongueTai')
         for tongueTaiUnit in tongueTaiMysql:
             print("输出id为%d的舌苔:%s"%(tongueTaiUnit[0],tongueTaiUnit[1].encode('utf8')))
             node = neoDb.createNode([self.TONGUETAITAG], {'id':tongueTaiUnit[0],'name':tongueTaiUnit[1]})
@@ -90,12 +90,12 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_tongue_zhi(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         # 先删除数据库中存在的tongueTai节点以及和其有关联的关系
         taongueZhiNodes = neoDb.selectNodeElementsFromDB(self.TONGUEZHITAG)
         neoDb.deleteNodesFromDB(taongueZhiNodes)
-        tongueZhiMysql = mysqlDb.select('tongue_zhi')
+        tongueZhiMysql = mysqlDb.select('tongueZhi')
         for tongueZhiUnit in tongueZhiMysql:
             print("输出id为%d的舌质:%s"%(tongueZhiUnit[0],tongueZhiUnit[1].encode('utf8')))
             node = neoDb.createNode([self.TONGUEZHITAG], {'id':tongueZhiUnit[0],'name':tongueZhiUnit[1]})
@@ -103,11 +103,11 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_desease2medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment','id,diseaseId,prescriptionId')
         for treamentUnit in treamentMysql:
-            priscriptionMysql = mysqlDb.select('prescription', 'medicineIds', 'id = ' + str(treamentUnit[2]))
+            priscriptionMysql = mysqlDb.select('prescription', 'name', 'id = ' + str(treamentUnit[2]))
             if (len(priscriptionMysql) > 0):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
@@ -141,11 +141,11 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_symptom2medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment','id,symptomIds,prescriptionId')
         for treamentUnit in treamentMysql:
-            priscriptionMysql = mysqlDb.select('prescription', 'medicineIds', 'id = ' + str(treamentUnit[2]))
+            priscriptionMysql = mysqlDb.select('prescription', 'name', 'id = ' + str(treamentUnit[2]))
             if (len(priscriptionMysql) > 0):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
@@ -183,11 +183,11 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_pulse2medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment','id,pulseId,prescriptionId')
         for treamentUnit in treamentMysql:
-            priscriptionMysql = mysqlDb.select('prescription', 'medicineIds', 'id = ' + str(treamentUnit[2]))
+            priscriptionMysql = mysqlDb.select('prescription', 'name', 'id = ' + str(treamentUnit[2]))
             if (len(priscriptionMysql) > 0):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
@@ -221,11 +221,11 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_tonguetai2medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment','id,tongueTaiId,prescriptionId')
         for treamentUnit in treamentMysql:
-            priscriptionMysql = mysqlDb.select('prescription', 'medicineIds', 'id = ' + str(treamentUnit[2]))
+            priscriptionMysql = mysqlDb.select('prescription', 'name', 'id = ' + str(treamentUnit[2]))
             if (len(priscriptionMysql) > 0):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
@@ -259,11 +259,11 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_tonguezhi2medicine(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment','id,tongueZhiId,prescriptionId')
         for treamentUnit in treamentMysql:
-            priscriptionMysql = mysqlDb.select('prescription', 'medicineIds', 'id = ' + str(treamentUnit[2]))
+            priscriptionMysql = mysqlDb.select('prescription', 'name', 'id = ' + str(treamentUnit[2]))
             if (len(priscriptionMysql) > 0):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
@@ -297,8 +297,8 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_symptom2tonguezhi(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,tongueZhiId')
         for treamentUnit in treamentMysql:
             syptomeIds = treamentUnit[1].split(",")
@@ -340,8 +340,8 @@ class Mysql2Neo4j(object):
         mysqlDb.close()
 
     def store_symptom2tonguetai(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,tongueTaiId')
         for treamentUnit in treamentMysql:
             syptomeIds = treamentUnit[1].split(",")
@@ -384,8 +384,8 @@ class Mysql2Neo4j(object):
 
 
     def store_symptom2pulse(self):
-        mysqlDb = TcmMysql()
-        neoDb = NeoDataGraphOpt()
+        mysqlDb = MysqlOpt()
+        neoDb = Neo4jOpt()
         treamentMysql = mysqlDb.select('treatment', 'id,symptomIds,pulseId')
         for treamentUnit in treamentMysql:
             syptomeIds = treamentUnit[1].split(",")
@@ -428,20 +428,20 @@ class Mysql2Neo4j(object):
 
     def mysql2neo4j(self):
         print ("开始创建图谱...")
-        # self.store_medicine()
-        # self.store_symptom()
-        # self.store_desease()
-        # self.store_pulse()
-        # self.store_tongue_tai()
-        # self.store_tongue_zhi()
-        # self.store_symptom2medicine()
-        # self.store_desease2medicine()
-        # self.store_pulse2medicine()
-        # self.store_tonguetai2medicine()
-        # self.store_tonguezhi2medicine()
-        # self.store_symptom2tonguezhi()
-        # self.store_symptom2tonguetai()
-        # self.store_symptom2pulse()
+        self.store_medicine()
+        self.store_symptom()
+        self.store_desease()
+        self.store_pulse()
+        self.store_tongue_tai()
+        self.store_tongue_zhi()
+        self.store_symptom2medicine()
+        self.store_desease2medicine()
+        self.store_pulse2medicine()
+        self.store_tonguetai2medicine()
+        self.store_tonguezhi2medicine()
+        self.store_symptom2tonguezhi()
+        self.store_symptom2tonguetai()
+        self.store_symptom2pulse()
 
 if __name__ == '__main__':
     print("directly excute mysql2neo4j...")
