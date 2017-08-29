@@ -1,0 +1,650 @@
+1th validation:
+开始创建图谱...
+开始存储中药节点...
+开始存储症状节点...
+开始存储舌苔节点...
+开始存储舌质节点...
+开始存储脉搏节点...
+开始存储每个中药节点的出现的次数...
+开始存储症状和中药的关系...
+开始存储舌苔和中药的关系...
+开始存储舌质和中药的关系...
+开始存储脉搏和中药的关系...
+0th precision:1.0,recall:0.125
+1th precision:0.44444,recall:1.0
+2th precision:0.8,recall:0.33333
+3th precision:0.0,recall:0.0
+4th precision:0.0,recall:0.0
+5th precision:0.61538,recall:0.72727
+6th precision:0.375,recall:0.25
+7th precision:1.0,recall:0.46154
+8th precision:0.0,recall:0.0
+9th precision:0.66667,recall:0.16667
+10th precision:0.33333,recall:0.27273
+11th precision:0.66667,recall:0.15385
+12th precision:0.42857,recall:0.375
+13th precision:0.14286,recall:0.09091
+14th precision:1.0,recall:0.33333
+15th precision:0.33333,recall:0.22222
+16th precision:0.2,recall:1.0
+17th precision:0.375,recall:0.33333
+18th precision:0.33333,recall:0.2
+19th precision:1.0,recall:0.28571
+20th precision:0.2,recall:0.13333
+21th precision:0.25,recall:0.57143
+22th precision:0.5,recall:0.11111
+23th precision:0.2381,recall:0.55556
+24th precision:0.33333,recall:0.14286
+25th precision:0.66667,recall:0.4
+26th precision:0.71429,recall:0.5
+27th precision:0.5,recall:0.14286
+28th precision:0.85714,recall:0.54545
+29th precision:0.45455,recall:0.5
+30th precision:0.8,recall:0.44444
+31th precision:0.33333,recall:0.33333
+32th precision:0.41667,recall:0.625
+33th precision:0.0,recall:0.0
+34th precision:1.0,recall:0.35714
+35th precision:0.46154,recall:0.75
+36th precision:0.28571,recall:0.25
+37th precision:1.0,recall:0.55556
+38th precision:0.5,recall:0.22222
+39th precision:0.25,recall:0.5
+40th precision:0.0,recall:0.0
+41th precision:0.4,recall:0.5
+42th precision:0.5,recall:0.57143
+43th precision:0.28571,recall:0.28571
+44th precision:0.25,recall:0.33333
+45th precision:0.36364,recall:0.57143
+46th precision:0.33333,recall:0.14286
+47th precision:0.4,recall:0.25
+48th precision:0.25,recall:0.08333
+49th precision:0.55556,recall:0.5
+50th precision:0.0,recall:0.0
+51th precision:0.6,recall:0.42857
+52th precision:0.57143,recall:0.5
+53th precision:0.33333,recall:0.1
+54th precision:1.0,recall:0.14286
+55th precision:0.0,recall:0.0
+56th precision:1.0,recall:0.66667
+57th precision:0.22222,recall:0.33333
+58th precision:0.0,recall:0.0
+59th precision:1.0,recall:0.09091
+60th precision:0.4,recall:1.0
+61th precision:0.28571,recall:0.25
+62th precision:0.2,recall:0.06667
+63th precision:0.11111,recall:0.14286
+64th precision:0.3,recall:0.33333
+65th precision:0.4,recall:1.0
+66th precision:0.33333,recall:0.23077
+67th precision:0.4,recall:0.28571
+68th precision:0.27273,recall:0.375
+69th precision:0.33333,recall:0.22222
+70th precision:0.625,recall:0.29412
+71th precision:0.33333,recall:0.6
+72th precision:1.0,recall:0.23077
+73th precision:0.0,recall:0.0
+74th precision:0.44444,recall:0.4
+75th precision:0.0,recall:0.0
+76th precision:0.16667,recall:0.11111
+77th precision:0.375,recall:0.21429
+78th precision:0.0,recall:0.0
+79th precision:0.5,recall:0.375
+80th precision:0.25,recall:0.22222
+81th precision:0.1,recall:0.1
+82th precision:0.33333,recall:0.18182
+83th precision:0.25,recall:0.5
+84th precision:0.33333,recall:0.4
+85th precision:0.2,recall:0.33333
+86th precision:0.15385,recall:0.4
+87th precision:0.22222,recall:0.5
+88th precision:0.33333,recall:0.4
+89th precision:0.0,recall:0.0
+90th precision:0.33333,recall:1.0
+91th precision:0.0,recall:0.0
+92th precision:0.0,recall:0.0
+93th precision:0.18182,recall:0.25
+94th precision:0.2,recall:0.25
+95th precision:0.25,recall:0.25
+96th precision:0.2,recall:0.375
+97th precision:0.66667,recall:0.22222
+98th precision:1.0,recall:0.33333
+99th precision:0.23529,recall:0.8
+100th precision:0.0,recall:0.0
+101th precision:0.46154,recall:0.75
+102th precision:0.14286,recall:0.09091
+103th precision:0.0,recall:0.0
+104th precision:0.33333,recall:0.83333
+105th precision:0.2,recall:0.33333
+106th precision:0.44444,recall:0.57143
+107th precision:0.0,recall:0.0
+108th precision:0.0,recall:0.0
+109th precision:0.33333,recall:0.75
+110th precision:0.125,recall:0.33333
+111th precision:0.21429,recall:0.75
+112th precision:0.14286,recall:0.33333
+113th precision:0.45455,recall:0.83333
+114th precision:0.0,recall:0.0
+precision:0.36624
+recall:0.32783
+F1:0.345972190701
+2th validation:
+开始创建图谱...
+开始存储中药节点...
+开始存储症状节点...
+开始存储舌苔节点...
+开始存储舌质节点...
+开始存储脉搏节点...
+开始存储每个中药节点的出现的次数...
+开始存储症状和中药的关系...
+开始存储舌苔和中药的关系...
+开始存储舌质和中药的关系...
+开始存储脉搏和中药的关系...
+0th precision:0.83333,recall:0.55556
+1th precision:0.44444,recall:0.33333
+2th precision:1.0,recall:0.0625
+3th precision:0.31818,recall:0.875
+4th precision:1.0,recall:0.54545
+5th precision:0.0,recall:0.0
+6th precision:0.33333,recall:0.42857
+7th precision:0.36364,recall:0.23529
+8th precision:0.0,recall:0.0
+9th precision:0.1,recall:0.11111
+10th precision:0.25,recall:0.08333
+11th precision:0.5,recall:0.15385
+12th precision:0.27273,recall:0.25
+13th precision:1.0,recall:0.46154
+14th precision:0.0,recall:0.0
+15th precision:0.1,recall:0.28571
+16th precision:0.57143,recall:0.8
+17th precision:0.25,recall:0.16667
+18th precision:1.0,recall:0.25
+19th precision:0.5,recall:0.14286
+20th precision:0.33333,recall:0.66667
+21th precision:0.4,recall:0.125
+22th precision:0.4,recall:0.66667
+23th precision:0.66667,recall:0.22222
+24th precision:0.14286,recall:0.125
+25th precision:0.5,recall:0.66667
+26th precision:0.66667,recall:0.4
+27th precision:0.25,recall:0.125
+28th precision:0.5,recall:0.25
+29th precision:0.11111,recall:0.125
+30th precision:0.0,recall:0.0
+31th precision:0.1,recall:0.2
+32th precision:0.6,recall:1.0
+33th precision:0.375,recall:1.0
+34th precision:0.4,recall:1.0
+35th precision:0.3,recall:1.0
+36th precision:0.45455,recall:1.0
+37th precision:0.66667,recall:1.0
+38th precision:0.90909,recall:1.0
+39th precision:1.0,recall:0.09091
+40th precision:0.14286,recall:0.25
+41th precision:0.125,recall:0.4
+42th precision:0.5,recall:1.0
+43th precision:0.26667,recall:0.57143
+44th precision:0.53846,recall:0.77778
+45th precision:0.0,recall:0.0
+46th precision:0.125,recall:0.11111
+47th precision:0.33333,recall:0.25
+48th precision:0.18182,recall:0.2
+49th precision:0.27273,recall:0.42857
+50th precision:0.5,recall:0.4
+51th precision:0.33333,recall:0.14286
+52th precision:0.0,recall:0.0
+53th precision:0.71429,recall:0.83333
+54th precision:1.0,recall:0.64286
+55th precision:0.8,recall:1.0
+56th precision:1.0,recall:0.33333
+57th precision:0.7,recall:1.0
+58th precision:0.36364,recall:1.0
+59th precision:0.83333,recall:0.71429
+60th precision:0.5,recall:0.33333
+61th precision:1.0,recall:0.22222
+62th precision:0.33333,recall:0.5
+63th precision:0.26923,recall:1.0
+64th precision:0.66667,recall:0.28571
+65th precision:0.4,recall:0.2
+66th precision:0.75,recall:0.3
+67th precision:0.25,recall:0.08333
+68th precision:0.7,recall:0.77778
+69th precision:0.46154,recall:0.75
+70th precision:0.5,recall:0.66667
+71th precision:0.2,recall:0.16667
+72th precision:0.7,recall:0.58333
+73th precision:0.3,recall:0.27273
+74th precision:0.77778,recall:0.875
+75th precision:0.21429,recall:0.2
+76th precision:0.0,recall:0.0
+77th precision:0.08333,recall:0.1
+78th precision:0.5,recall:0.16667
+79th precision:0.1,recall:0.11111
+80th precision:1.0,recall:0.09091
+81th precision:0.2,recall:0.22222
+82th precision:0.5,recall:0.08333
+83th precision:0.28571,recall:1.0
+84th precision:0.0,recall:0.0
+85th precision:0.0,recall:0.0
+86th precision:0.0,recall:0.0
+87th precision:0.0,recall:0.0
+88th precision:0.66667,recall:0.28571
+89th precision:0.3,recall:0.3
+90th precision:0.0,recall:0.0
+91th precision:0.0,recall:0.0
+92th precision:0.75,recall:1.0
+93th precision:0.42105,recall:1.0
+94th precision:1.0,recall:0.625
+95th precision:0.14286,recall:1.0
+96th precision:1.0,recall:0.25
+97th precision:0.11111,recall:0.25
+98th precision:0.0,recall:0.0
+99th precision:0.0,recall:0.0
+100th precision:1.0,recall:0.2
+101th precision:0.28571,recall:0.2
+102th precision:0.66667,recall:0.4
+103th precision:1.0,recall:0.5
+104th precision:0.0,recall:0.0
+105th precision:0.5,recall:0.3
+106th precision:0.5,recall:0.3
+107th precision:0.05556,recall:0.33333
+108th precision:0.625,recall:0.5
+109th precision:0.16667,recall:0.2
+110th precision:0.38462,recall:0.71429
+111th precision:0.0,recall:0.0
+112th precision:0.0,recall:0.0
+113th precision:0.21053,recall:0.5
+114th precision:0.11111,recall:0.16667
+precision:0.40811
+recall:0.38674
+F1:0.397137727622
+3th validation:
+开始创建图谱...
+开始存储中药节点...
+开始存储症状节点...
+开始存储舌苔节点...
+开始存储舌质节点...
+开始存储脉搏节点...
+开始存储每个中药节点的出现的次数...
+开始存储症状和中药的关系...
+开始存储舌苔和中药的关系...
+开始存储舌质和中药的关系...
+开始存储脉搏和中药的关系...
+0th precision:0.0,recall:0.0
+1th precision:0.57143,recall:0.66667
+2th precision:0.375,recall:0.33333
+3th precision:1.0,recall:0.08333
+4th precision:0.25,recall:0.25
+5th precision:0.66667,recall:0.28571
+6th precision:0.11111,recall:0.125
+7th precision:0.55556,recall:0.55556
+8th precision:0.22222,recall:0.5
+9th precision:0.0,recall:0.0
+10th precision:0.5,recall:0.28571
+11th precision:0.17647,recall:0.6
+12th precision:0.0,recall:0.0
+13th precision:0.85714,recall:0.46154
+14th precision:0.0,recall:0.0
+15th precision:0.57143,recall:0.4
+16th precision:0.13333,recall:0.33333
+17th precision:0.25,recall:0.5
+18th precision:0.71429,recall:0.41667
+19th precision:0.54545,recall:0.75
+20th precision:0.25,recall:0.2
+21th precision:0.21429,recall:0.3
+22th precision:0.28571,recall:0.28571
+23th precision:0.28571,recall:0.22222
+24th precision:0.55556,recall:0.5
+25th precision:0.8,recall:0.5
+26th precision:1.0,recall:0.53846
+27th precision:0.33333,recall:0.33333
+28th precision:0.55556,recall:0.71429
+29th precision:0.4,recall:0.14286
+30th precision:0.57143,recall:0.26667
+31th precision:0.5,recall:0.5
+32th precision:0.0,recall:0.0
+33th precision:0.0,recall:0.0
+34th precision:0.2,recall:0.14286
+35th precision:0.10526,recall:0.66667
+36th precision:0.5,recall:0.15385
+37th precision:0.1,recall:0.2
+38th precision:0.28571,recall:0.25
+39th precision:0.55556,recall:0.71429
+40th precision:0.22727,recall:0.71429
+41th precision:0.0,recall:0.0
+42th precision:1.0,recall:0.07143
+43th precision:0.5,recall:0.14286
+44th precision:0.18182,recall:0.33333
+45th precision:0.26087,recall:0.54545
+46th precision:0.0,recall:0.0
+47th precision:0.36364,recall:0.5
+48th precision:0.0,recall:0.0
+49th precision:0.0,recall:0.0
+50th precision:0.0,recall:0.0
+51th precision:0.44444,recall:0.36364
+52th precision:0.08333,recall:0.14286
+53th precision:0.0,recall:0.0
+54th precision:0.57143,recall:0.44444
+55th precision:0.28571,recall:0.5
+56th precision:0.0,recall:0.0
+57th precision:0.0,recall:0.0
+58th precision:0.16667,recall:0.15385
+59th precision:0.66667,recall:0.4
+60th precision:1.0,recall:0.2
+61th precision:0.11111,recall:1.0
+62th precision:0.23077,recall:0.33333
+63th precision:0.4,recall:0.75
+64th precision:0.28571,recall:0.4
+65th precision:1.0,recall:0.58333
+66th precision:0.54545,recall:1.0
+67th precision:0.0,recall:0.0
+68th precision:0.0,recall:0.0
+69th precision:0.23077,recall:1.0
+70th precision:0.375,recall:1.0
+71th precision:0.33333,recall:1.0
+72th precision:0.18182,recall:0.33333
+73th precision:0.83333,recall:0.5
+74th precision:1.0,recall:0.13333
+75th precision:0.0,recall:0.0
+76th precision:0.0,recall:0.0
+77th precision:0.4,recall:0.16667
+78th precision:0.625,recall:0.25
+79th precision:0.2,recall:0.3
+80th precision:0.5,recall:0.38462
+81th precision:0.2,recall:0.09091
+82th precision:0.71429,recall:0.625
+83th precision:0.22222,recall:0.22222
+84th precision:0.625,recall:0.71429
+85th precision:0.33333,recall:0.22222
+86th precision:0.0,recall:0.0
+87th precision:0.33333,recall:0.14286
+88th precision:0.0,recall:0.0
+89th precision:0.66667,recall:0.22222
+90th precision:0.75,recall:0.5
+91th precision:0.28571,recall:1.0
+92th precision:0.2,recall:0.11111
+93th precision:1.0,recall:0.25
+94th precision:0.42857,recall:0.375
+95th precision:0.0,recall:0.0
+96th precision:0.41667,recall:0.55556
+97th precision:0.25,recall:0.5
+98th precision:0.875,recall:0.875
+99th precision:1.0,recall:0.25
+100th precision:0.875,recall:1.0
+101th precision:0.66667,recall:0.5
+102th precision:0.33333,recall:0.75
+103th precision:0.19048,recall:0.44444
+104th precision:0.0,recall:0.0
+105th precision:0.3,recall:0.42857
+106th precision:0.09091,recall:0.33333
+107th precision:0.1,recall:0.33333
+108th precision:0.0,recall:0.0
+109th precision:0.5,recall:0.25
+110th precision:0.0,recall:0.0
+111th precision:0.13333,recall:0.33333
+112th precision:1.0,recall:0.2
+113th precision:0.0,recall:0.0
+114th precision:0.0,recall:0.0
+precision:0.35211
+recall:0.33091
+F1:0.341180990601
+4th validation:
+开始创建图谱...
+开始存储中药节点...
+开始存储症状节点...
+开始存储舌苔节点...
+开始存储舌质节点...
+开始存储脉搏节点...
+开始存储每个中药节点的出现的次数...
+开始存储症状和中药的关系...
+开始存储舌苔和中药的关系...
+开始存储舌质和中药的关系...
+开始存储脉搏和中药的关系...
+0th precision:0.33333,recall:0.25
+1th precision:0.2,recall:0.25
+2th precision:0.35714,recall:0.71429
+3th precision:0.5,recall:0.22222
+4th precision:0.5,recall:0.3
+5th precision:0.71429,recall:0.625
+6th precision:0.46667,recall:1.0
+7th precision:0.125,recall:0.06667
+8th precision:0.0,recall:0.0
+9th precision:0.63636,recall:0.53846
+10th precision:0.8,recall:0.21053
+11th precision:0.33333,recall:0.13333
+12th precision:0.4,recall:0.2
+13th precision:1.0,recall:0.5
+14th precision:0.5,recall:0.66667
+15th precision:0.25,recall:0.25
+16th precision:0.29412,recall:0.38462
+17th precision:0.125,recall:0.5
+18th precision:0.21053,recall:0.36364
+19th precision:0.0,recall:0.0
+20th precision:0.7,recall:0.5
+21th precision:0.45455,recall:0.71429
+22th precision:0.0,recall:0.0
+23th precision:0.66667,recall:0.22222
+24th precision:0.0,recall:0.0
+25th precision:1.0,recall:0.18182
+26th precision:0.55556,recall:0.71429
+27th precision:0.66667,recall:0.2
+28th precision:0.0,recall:0.0
+29th precision:0.66667,recall:1.0
+30th precision:0.0,recall:0.0
+31th precision:0.125,recall:0.33333
+32th precision:0.42857,recall:0.33333
+33th precision:0.6,recall:1.0
+34th precision:0.8,recall:1.0
+35th precision:1.0,recall:0.3
+36th precision:0.5,recall:0.11111
+37th precision:1.0,recall:0.75
+38th precision:0.33333,recall:1.0
+39th precision:1.0,recall:0.5
+40th precision:0.90909,recall:0.83333
+41th precision:0.0,recall:0.0
+42th precision:0.2,recall:0.14286
+43th precision:0.0,recall:0.0
+44th precision:0.22222,recall:0.25
+45th precision:0.33333,recall:0.2
+46th precision:0.63636,recall:0.7
+47th precision:0.0,recall:0.0
+48th precision:0.0,recall:0.0
+49th precision:0.33333,recall:0.16667
+50th precision:0.2,recall:0.1
+51th precision:0.44444,recall:0.4
+52th precision:0.5,recall:0.375
+53th precision:0.36364,recall:0.57143
+54th precision:0.15,recall:0.6
+55th precision:0.33333,recall:0.5
+56th precision:1.0,recall:0.07143
+57th precision:0.83333,recall:1.0
+58th precision:0.44444,recall:0.33333
+59th precision:0.5625,recall:1.0
+60th precision:1.0,recall:0.42857
+61th precision:0.55556,recall:1.0
+62th precision:0.41667,recall:0.45455
+63th precision:0.0,recall:0.0
+64th precision:1.0,recall:0.1
+65th precision:0.71429,recall:0.41667
+66th precision:0.25,recall:0.11111
+67th precision:0.0,recall:0.0
+68th precision:0.5,recall:0.875
+69th precision:0.66667,recall:1.0
+70th precision:0.2,recall:0.33333
+71th precision:0.5,recall:0.11111
+72th precision:0.0,recall:0.0
+73th precision:0.5,recall:0.07692
+74th precision:0.7,recall:0.7
+75th precision:0.57143,recall:0.26667
+76th precision:0.33333,recall:0.3
+77th precision:0.13333,recall:0.18182
+78th precision:0.0,recall:0.0
+79th precision:0.6,recall:0.54545
+80th precision:0.1,recall:0.16667
+81th precision:0.22222,recall:0.22222
+82th precision:0.38462,recall:0.71429
+83th precision:0.42857,recall:0.75
+84th precision:0.0,recall:0.0
+85th precision:0.33333,recall:0.3
+86th precision:0.0,recall:0.0
+87th precision:0.1875,recall:0.3
+88th precision:0.28571,recall:0.4
+89th precision:0.0,recall:0.0
+90th precision:0.16667,recall:0.4
+91th precision:0.0,recall:0.0
+92th precision:0.5,recall:0.25
+93th precision:0.11111,recall:0.5
+94th precision:0.0,recall:0.0
+95th precision:0.22222,recall:0.4
+96th precision:1.0,recall:0.11111
+97th precision:0.0,recall:0.0
+98th precision:0.42857,recall:0.6
+99th precision:0.0,recall:0.0
+100th precision:0.33333,recall:0.06667
+101th precision:0.5,recall:0.25
+102th precision:0.28571,recall:0.66667
+103th precision:0.09091,recall:0.5
+104th precision:0.11111,recall:0.16667
+105th precision:0.33333,recall:0.85714
+106th precision:0.0,recall:0.0
+107th precision:0.0,recall:0.0
+108th precision:0.0,recall:0.0
+109th precision:0.0,recall:0.0
+110th precision:0.0,recall:0.0
+111th precision:0.28571,recall:0.66667
+112th precision:0.0,recall:0.0
+113th precision:0.5,recall:0.14286
+114th precision:0.0,recall:0.0
+precision:0.35792
+recall:0.33576
+F1:0.346486043132
+5th validation:
+开始创建图谱...
+开始存储中药节点...
+开始存储症状节点...
+开始存储舌苔节点...
+开始存储舌质节点...
+开始存储脉搏节点...
+开始存储每个中药节点的出现的次数...
+开始存储症状和中药的关系...
+开始存储舌苔和中药的关系...
+开始存储舌质和中药的关系...
+开始存储脉搏和中药的关系...
+0th precision:0.5,recall:0.28571
+1th precision:0.5,recall:0.28571
+2th precision:0.16667,recall:0.09091
+3th precision:0.0,recall:0.0
+4th precision:0.0,recall:0.0
+5th precision:0.23077,recall:0.2
+6th precision:0.375,recall:0.2
+7th precision:0.14286,recall:0.2
+8th precision:0.7,recall:0.53846
+9th precision:0.25,recall:0.3
+10th precision:0.33333,recall:0.09091
+11th precision:0.3,recall:0.3
+12th precision:0.66667,recall:0.26667
+13th precision:0.0,recall:0.0
+14th precision:0.25,recall:0.18182
+15th precision:0.18182,recall:0.22222
+16th precision:0.0,recall:0.0
+17th precision:0.4,recall:0.57143
+18th precision:0.0,recall:0.0
+19th precision:0.33333,recall:0.75
+20th precision:0.375,recall:0.21429
+21th precision:0.55556,recall:0.41667
+22th precision:0.25,recall:0.25
+23th precision:0.375,recall:0.3
+24th precision:1.0,recall:0.11111
+25th precision:0.23077,recall:0.5
+26th precision:1.0,recall:0.75
+27th precision:0.0,recall:0.0
+28th precision:1.0,recall:0.44444
+29th precision:0.5,recall:0.16667
+30th precision:0.33333,recall:0.11111
+31th precision:0.0,recall:0.0
+32th precision:0.5,recall:0.06667
+33th precision:1.0,recall:0.375
+34th precision:1.0,recall:0.5
+35th precision:0.38462,recall:0.5
+36th precision:0.5,recall:0.75
+37th precision:0.18182,recall:0.66667
+38th precision:0.33333,recall:0.16667
+39th precision:1.0,recall:0.25
+40th precision:1.0,recall:0.16667
+41th precision:1.0,recall:0.35714
+42th precision:0.46667,recall:1.0
+43th precision:0.0,recall:0.0
+44th precision:0.5,recall:1.0
+45th precision:0.38462,recall:0.45455
+46th precision:0.66667,recall:0.5
+47th precision:0.3,recall:0.33333
+48th precision:0.5,recall:0.33333
+49th precision:0.22222,recall:0.33333
+50th precision:0.66667,recall:0.25
+51th precision:0.0,recall:0.0
+52th precision:0.11111,recall:0.1
+53th precision:0.5,recall:0.125
+54th precision:0.25,recall:0.28571
+55th precision:0.6,recall:0.33333
+56th precision:1.0,recall:0.5
+57th precision:0.25,recall:0.25
+58th precision:0.0,recall:0.0
+59th precision:0.6,recall:0.5
+60th precision:0.26667,recall:0.23529
+61th precision:1.0,recall:0.54545
+62th precision:0.5,recall:0.16667
+63th precision:0.0,recall:0.0
+64th precision:0.33333,recall:0.4
+65th precision:0.5,recall:0.3
+66th precision:0.5,recall:0.28571
+67th precision:0.5,recall:0.1
+68th precision:0.16667,recall:0.28571
+69th precision:0.66667,recall:0.18182
+70th precision:0.21429,recall:0.5
+71th precision:0.42857,recall:0.5
+72th precision:0.27273,recall:0.27273
+73th precision:0.5,recall:0.4
+74th precision:0.44444,recall:0.36364
+75th precision:0.5,recall:0.54545
+76th precision:1.0,recall:0.25
+77th precision:0.0,recall:0.0
+78th precision:0.0,recall:0.0
+79th precision:0.14286,recall:0.33333
+80th precision:0.66667,recall:0.4
+81th precision:0.5,recall:0.5
+82th precision:0.09091,recall:0.33333
+83th precision:0.0,recall:0.0
+84th precision:0.22222,recall:0.28571
+85th precision:0.28571,recall:1.0
+86th precision:0.46154,recall:0.5
+87th precision:0.0,recall:0.0
+88th precision:0.1,recall:0.16667
+89th precision:0.0,recall:0.0
+90th precision:0.33333,recall:0.1
+91th precision:0.07692,recall:0.125
+92th precision:0.0,recall:0.0
+93th precision:0.28571,recall:0.28571
+94th precision:0.8,recall:0.8
+95th precision:0.16667,recall:0.4
+96th precision:0.5,recall:0.57143
+97th precision:0.0,recall:0.0
+98th precision:0.0,recall:0.0
+99th precision:0.05,recall:0.09091
+100th precision:1.0,recall:0.15385
+101th precision:0.0625,recall:0.14286
+102th precision:0.2,recall:0.25
+103th precision:0.0,recall:0.0
+104th precision:0.0,recall:0.0
+105th precision:0.0,recall:0.0
+106th precision:0.5,recall:0.25
+107th precision:0.46154,recall:0.75
+108th precision:0.0,recall:0.0
+109th precision:0.07143,recall:0.1
+110th precision:0.63636,recall:0.63636
+111th precision:0.33333,recall:0.4
+112th precision:0.13333,recall:0.22222
+113th precision:0.33333,recall:0.11111
+114th precision:0.5,recall:0.16667
+precision:0.36153
+recall:0.28046
+F1:0.315876271593

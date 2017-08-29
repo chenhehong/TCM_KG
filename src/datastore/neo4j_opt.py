@@ -1,25 +1,18 @@
 # -*- coding:utf-8 -*-
-'''
-Created on 2016年3月23日
-@author: hylovedd
-
-Update on 2016年8月10日
-@author: kw_wang, jj_ma
-'''
 
 from __future__ import absolute_import
 from __future__ import print_function
-from py2neo import Node, Relationship, NodeSelector, Walkable
-from py2neo.database import Graph, cypher
-from py2neo.database.auth import authenticate
 
+from py2neo import Node, Relationship, NodeSelector
+from py2neo.database import Graph
+from py2neo.database.auth import authenticate
 
 _user = 'neo4j'
 _password = '123456'
-# _service_ip = 'localhost:7474'
 _service_ip = '127.0.0.1:7474'
 
 class Neo4jOpt(object):
+
     def __init__(self, user=_user, password=_password, service_ip = _service_ip):
         self.user = user;
         self.password = password
@@ -27,23 +20,11 @@ class Neo4jOpt(object):
         self.graph = self.connectGraph()
         self.selector = NodeSelector(self.graph)
                 
-    '''
-    connect to database
-    '''
-    
     def connectGraph(self):
-        # graph = Graph(user = self.user, password = self.password)
         authenticate(self.service_ip, self.user, self.password)
         graph = Graph('http://%s/db/data/' % self.service_ip)
-#         authenticate("localhost:7474", self.user, self.password)
-#         graph = Graph("http://localhost:7474/db/data/")
-        
         return graph
-        ''
-    '''
-    construct graph
-    '''
-    
+
     '''
     #2016年8月9号修改
     #把创建节点和创建关系给抽象化
@@ -192,135 +173,23 @@ class Neo4jOpt(object):
             self.graph.separate(relationships)               
 
             
-    def updateKeyInNode(self, node, updateProperty = False, properties = {}):
-        '''
-        #函数功能：实现对结点的一个或多个属性的添加、修改或删除操作
-        #函数说明：判断结点是否存在：
-                    1、不存在：直接返回None;
-                    2、存在：则判断待 添加的属性是否存在于指定的结点node中：
-                        1、不存在：则创建属性并赋值；
-                        2、存在：根据布尔变量updateProperty的值判断是否要改变原属性值：
-                            1)如果为True，则改变原属性值；
-                            2)如果为Flase,则不改变原属性值。
-                        3、如果待修改的属性值为None，则删除该属性。
-        #参数说明：node - 待添加属性的结点
-                updateProperty - 如果属性已经存在，指示是否要修改原属性值
-                properties - 待添加的属性键值对
-        #返回数据：如果完成修改属性操作，则返回True,否则返回异常提示
-        '''
-        '''
-        #2016年8月9日修改
-                     修改了把新节点加入数据库的方式,保留关系的信息
-        '''
-        if self.graph.exists(node): 
-            newNode = node     
+    def updateKeyInNode(self, node, properties = {}):
+        if self.graph.exists(node):
             for key in properties:
-                if newNode[key] == None:
-                    newNode[key] = properties[key]
-                else :
-                    if updateProperty:
-                        newNode[key] = properties[key]        
-            self.modifyNodeInDB(node, newNode)
-            return newNode
+                node[key] = properties[key]
+            self.graph.push(node)
+            return node
         else :
             return None
     
-    def updateKeyInRelationship(self, relation, updateProperty = False, relationshipName=None,properties = {}):
-        '''
-        #函数功能：实现对结点的一个或多个属性的添加、修改或删除操作
-        #函数说明：判断结点是否存在：
-                    1、不存在：直接返回None;
-                    2、存在：则判断待 添加的属性是否存在于指定的结点node中：
-                        1、不存在：则创建属性并赋值；
-                        2、存在：根据布尔变量updateProperty的值判断是否要改变原属性值：
-                            1)如果为True，则改变原属性值；
-                            2)如果为Flase,则不改变原属性值。
-                        3、如果待修改的属性值为None，则删除该属性。
-        #参数说明：node - 待添加属性的结点
-                updateProperty - 如果属性已经存在，指示是否要修改原属性值
-                properties - 待添加的属性键值对
-        #返回数据：如果完成修改属性操作，则返回True,否则返回异常提示
-        '''
-        '''
-        #2016年8月9日修改
-        #修改了把新节点加入数据库的方式,保留关系的信息
-        #添加了修改关系名字（标签）的功能            
-        '''
-        if self.graph.exists(relation): 
-            newRelation = relation     
+    def updateKeyInRelationship(self, relation, relationshipName=None,properties = {}):
+        if self.graph.exists(relation):
             for key in properties:
-                if newRelation[key] == None:
-                    newRelation[key] = properties[key]
-                else :
-                    if updateProperty:
-                        newRelation[key] = properties[key] 
-            if not relationshipName==None:
-                if relationshipName==newRelation.type():
-                    self.modifyRelationshipInDB(relation, newRelation)
-                    return newRelation
-                else:
-                    newRelation=self.createRelationship(relationshipName,newRelation.start_node(),newRelation.end_node(),dict(newRelation))           
-            self.modifyRelationshipInDB(relation, newRelation)
-            return newRelation
+                relation[key] = properties[key]
+            self.graph.push(relation)
+            return relation
         else :
             return None
-        
-    def addLabelsInNode(self, node, *labels):
-        '''
-        #函数功能：实现对节点node的标签添加功能。
-        #函数说明：判断结点是否存在有参数labels中的标签：
-                    1、存在：不操作
-                    2、不存在：执行添加标签的操作，无异常提示
-                                                判断原节点是否在图数据库里：
-                    1.存在：把新节点替换原节点加入数据库
-                    2.不存在：直接把新节点加入数据库                            
-        #参数说明：node - 待添加标签labels的结点
-                labels - 待添加的标签列表
-        #返回数据：返回添加完标签的新节点
-        '''                    
-        '''
-        #2016年8月9日修改
-                    原先的方法错误，不能简单地删除节点，那样把关系也给删了的，丢失了关系的信息
-                    改为把与原节点相关的所有关系和节点提取出来，删除旧节点，建立新节点与那些节点的关系
-                    构建新子图，在把新子图放进数据库，会自动过滤掉已存在的节点。
-        '''
-        newNode=node
-        for label in labels:
-            if not newNode.has_label(label):
-                newNode.add_label(label)
-        if self.graph.exists(node):
-            self.modifyNodeInDB(node, newNode)
-        else:
-            self.constructSubGraphInDB(newNode)
-        return newNode
-    
-    def deleteLabelsFromNode(self, node, *labels):
-        '''
-        #函数功能：实现对节点node的标签删除功能。
-        #函数说明：判断结点是否存在有参数labels中的标签：
-                    1、存在：执行删除标签的操作，无异常提示
-                    2、不存在：不操作
-                                                判断原节点是否在图数据库里：
-                    1.存在：把新节点替换原节点加入数据库
-                    2.不存在：直接把新节点加入数据库           
-        #参数说明：node - 待删除标签labels的结点
-                labels - 待删除的标签列表
-        #返回数据：如果操作成功，返回True,否则返回Flase。
-        '''
-        '''
-        #2016年8月9日修改
-                    与添加标签一样，修改了把新节点加入数据库的方式
-        '''
-        newNode=node
-        for label in labels:
-            if newNode.has_label(label):
-                newNode.remove_label(label)
-        if self.graph.exists(node):
-            self.modifyNodeInDB(node, newNode)
-        else:
-            self.constructSubGraphInDB(newNode)
-        
-        return newNode
         
     def testElementsInDB(self,subGraph):
         '''
@@ -335,49 +204,6 @@ class Neo4jOpt(object):
         for node in n:
             print(node)
 
-    
-    def modifyNodeInDB(self,oldNode,newNode):
-        
-        '''
-        #2016年8月9日创建
-        #函数功能：实现修改后的节点加入数据库的功能。
-        #函数说明：在原节点已经存在于数据库的前提下，找到所有与原节点直接相关的节点与关系，构建子图
-                                                 利用与原节点相关的关系，建立新节点与 那些节点的关系，用于构建新子图
-                                                 把新子图加入数据库，自动过滤掉已经存在的直接相关的节点，这样不会丢失掉与原节点相关的关系数据
-        #参数说明：oldNode - 已经存在于数据库的旧节点
-                  newNode - 修改后的新节点，准备加入数据库
-        #返回数据：无
-        '''
-        outerRelation=self.graph.match(start_node=oldNode)
-        innerRelation=self.graph.match(end_node=oldNode)
-        newGraph=oldNode
-        for rel in outerRelation:
-            newRel=Relationship(oldNode,rel.type(),rel.end_node(),**dict(rel))
-            newGraph=newGraph|newRel
-            
-        for rel in innerRelation:
-            newRel=Relationship(rel.start_node(),rel.type(),oldNode,**dict(rel))
-            newGraph=newGraph|newRel 
-        
-        self.deleteNodeFromDB(oldNode)
-        self.constructSubGraphInDB(newGraph)
-          
-        return None  
-    
-    def modifyRelationshipInDB(self,oldRelationship,newRelationship):
-        '''
-        #2016年8月9日创建
-        #函数功能：实现修改后的关系加入数据库的功能。
-        #函数说明：简单地先删旧关系再加新关系
-        #参数说明：oldRelationship - 已经存在于数据库的旧关系
-                  newRelationship - 修改后的新关系，准备加入数据库
-        #返回数据：无
-        '''
-        if self.graph.exists(oldRelationship):
-            self.graph.separate(oldRelationship)
-            self.constructSubGraphInDB(newRelationship)
-        return None   
-    
     def addLink(self,path,startLabelName,endLabelName,relationName):
         relation=[]
         
@@ -410,11 +236,11 @@ if __name__ == '__main__':
     print("directly excute neoDataGraphOpt...")
     #初始化,输入数据库帐号密码
     neoObj = Neo4jOpt("neo4j", "123456")
-    a = neoObj.graph.data("MATCH (s1:symptom)-[r1:symptom2medicine]-(m1:medicine) WHERE m1.name='桂枝' with s1,r1,m1 MATCH (s2:symptom)-[r2:symptom2medicine]-(m2:medicine) "
-                          "WHERE m2.name='麻黄' and s2=s1 return s2,r1,r2,m1,m2 order by r1.weight+r2.weight DESC")
-    neoObj.graph.match()
-    for i in a:
-        print(i['s2']['name'])
+    medicineNodes = neoObj.selectNodeElementsFromDB('medicine', condition=[],
+                                                   properties={"id": int(248)})
+    medicineNode = medicineNodes[0]
+    ntids = [2,1,3]
+    neoObj.updateKeyInNode(medicineNode, properties={'tid': ntids, "weight": 3})
     #创建节点,返回节点
     #node1=neoObj.createNode([u"Person"], {u'name':u'Jerr'})
     #把节点、关系、子图加入数据库，自动过滤掉已存在的，无返回值

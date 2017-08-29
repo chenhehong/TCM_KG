@@ -12,7 +12,7 @@ from src.base_data_query import BaseDataQuery
 
 class SimpleRuleDM(object):
 
-    resultLimit = 5
+    TOPK = 5
     TIDS = 'tids'
     NAME = 'name'
     CONFIDENCE = "confidence"
@@ -25,28 +25,28 @@ class SimpleRuleDM(object):
         symptoms = baseDataQuery.get_symptom_from_medicine(list)
         i = 1
         for symptom in symptoms:
-            if i>self.resultLimit:
+            if i>self.TOPK:
                 break
             print '症状：' + symptom[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(symptom[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
         tongueZhis = baseDataQuery.get_tonguezhi_from_medicine(list)
         i = 1
         for tongueZhi in tongueZhis:
-            if i>self.resultLimit:
+            if i>self.TOPK:
                 break
             print '舌质：'+tongueZhi[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueZhi[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
         tongueTais = baseDataQuery.get_tonguetai_from_medicine(list)
         i = 1
         for tongueTai in tongueTais:
-            if i>self.resultLimit:
+            if i>self.TOPK:
                 break
             print '舌苔：'+tongueTai[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(tongueTai[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
         pulses = baseDataQuery.get_pulse_from_medicine(list)
         i = 1
         for pulse in pulses:
-            if i>self.resultLimit:
+            if i>self.TOPK:
                 break
             print '脉搏：'+pulse[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(pulse[BaseDataQuery.SEARCHWEIGHTKEY])
             i+=1
@@ -58,7 +58,7 @@ class SimpleRuleDM(object):
         medicines = baseDataQuery.get_medicine_from_symptom(list)
         i = 1
         for element in medicines:
-            if i > self.resultLimit:
+            if i > self.TOPK:
                 break
             print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
@@ -70,7 +70,7 @@ class SimpleRuleDM(object):
         medicines = baseDataQuery.get_medicine_from_tonguezhi(list)
         i = 1
         for medicine in medicines:
-            if i > self.resultLimit:
+            if i > self.TOPK:
                 break
             print '中药：' + medicine[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(medicine[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
@@ -82,7 +82,7 @@ class SimpleRuleDM(object):
         medicines = baseDataQuery.get_medicine_from_tonguetai(list)
         i = 1
         for element in medicines:
-            if i > self.resultLimit:
+            if i > self.TOPK:
                 break
             print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
@@ -94,7 +94,7 @@ class SimpleRuleDM(object):
         medicines = baseDataQuery.get_medicine_from_pulse(list)
         i = 1
         for element in medicines:
-            if i > self.resultLimit:
+            if i > self.TOPK:
                 break
             print '中药：' + element[BaseDataQuery.SEARCHVALUEKEY]['name'].encode('utf8') + ' 支持度：' + str(element[BaseDataQuery.SEARCHWEIGHTKEY])
             i += 1
@@ -191,7 +191,7 @@ class SimpleRuleDM(object):
         combineSortList = sorted(combineList,key=itemgetter('weight'),reverse=True)
         i = 1
         for element in combineSortList:
-            if i > self.resultLimit:
+            if i > self.TOPK:
                 break
             print '症状和舌脉组合：' + element['name'].encode('utf8') + ' 支持度：' + str(element['weight'])+' 置信度:'+str(element['confidence'])
             i += 1
@@ -334,7 +334,7 @@ class SimpleRuleDM(object):
             return
         i=1
         for e in newAllItem:
-            if(i>self.resultLimit):
+            if(i>self.TOPK):
                 break
             name = ''
             for n in e[self.NAME]:
