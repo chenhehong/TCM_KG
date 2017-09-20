@@ -147,6 +147,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 # print "mid"+str(medicineId)
                 medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
@@ -176,6 +180,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
                 diseaseNodes = neoDb.selectNodeElementsFromDB(self.DISEASETAG, condition=[],properties={self.NODEID: int(diseaseId)})
@@ -217,6 +225,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 for syptomeId in syptomeIds:
                     medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
@@ -259,6 +271,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
                 pulseNodes = neoDb.selectNodeElementsFromDB(self.PULSETAG, condition=[],properties={self.NODEID: int(pulseId)})
@@ -300,6 +316,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
                 tongueTaiNodes = neoDb.selectNodeElementsFromDB(self.TONGUETAITAG, condition=[],properties={self.NODEID: int(tongueTaiId)})
@@ -341,6 +361,10 @@ class Mysql2Neo4j(object):
                 medicineIds = priscriptionMysql[0][0].split(",")
             else:
                 continue
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             for medicineId in medicineIds:
                 medicineNodes = neoDb.selectNodeElementsFromDB(self.MEDICINETAG, condition=[],properties={self.NODEID: int(medicineId)})
                 tongueZhiNodes = neoDb.selectNodeElementsFromDB(self.TONGUEZHITAG, condition=[],properties={self.NODEID: int(tongueZhiId)})
@@ -541,6 +565,10 @@ class Mysql2Neo4j(object):
             if (len(priscriptionMysql) == 0):
                 continue
             medicineIds = priscriptionMysql[0][0].split(",")
+            # 针对name末尾有逗号的情况进行处理
+            lenth = len(medicineIds)
+            if(medicineIds[lenth-1]==''):
+                medicineIds.pop()
             medicineSet = set([int(x) for x in medicineIds])
             idSet = idSet|medicineSet
         return idSet

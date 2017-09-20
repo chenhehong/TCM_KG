@@ -35,11 +35,12 @@ class NaiveBayesDM(object):
             trainList = []
             for i in trainIndex:
                 trainList.append(tidList[i])
-            self.createGraph(filter=True,treamentIdfilterSet=set(trainList))
+            # self.createGraph(filter=True,treamentIdfilterSet=set(trainList))
             yTrue = []
             yPre = []
             FileUtil.add_string(preFile,str(numFold)+'th validation:')
             for i in testIndex:
+                print str(tidList[i])
                 perTreament = mysqlOpt.select('treatment','prescriptionId,symptomIds,tongueZhiId,tongueTaiId,pulseId','id='+str(tidList[i]))
                 pids = perTreament[0][0]
                 symptomIds = perTreament[0][1]
@@ -245,5 +246,35 @@ class NaiveBayesDM(object):
 if __name__=='__main__':
     naiveBayesDM=NaiveBayesDM()
     # naiveBayesDM.createGraph()
-    naiveBayesDM.input_multiple_syptomes(['头痛','发热','鼻塞'],'红','白','浮')
-    naiveBayesDM.cross_validation()
+    # naiveBayesDM.input_multiple_syptomes(['头痛','发热','鼻塞'],'红','白','浮')
+    # naiveBayesDM.cross_validation()
+
+    with open('pre.txt','r') as f:
+        pres = f.readlines()
+    yPre = []
+    yTrue = []
+    for pre in pres:
+        preList = pre.split(' ')
+        testId = preList[0]
+        preMedicineList = preList[1].decode('utf-8').split(',')
+        preMedicineList.pop()
+        yPre.append(preMedicineList)
+        mysqlOpt = MysqlOpt()
+        perTreament = mysqlOpt.select('treatment', 'prescriptionId',
+                                      'id=' + testId)
+        pids = perTreament[0][0]
+        perPrecription = mysqlOpt.select('prescription', 'name', 'id = ' + str(pids))
+        mids = perPrecription[0][0]
+        medicines = mysqlOpt.select('medicine', 'name', 'id IN (' + mids + ')')
+        trueMedicineList = []
+        for m in medicines:
+            trueMedicineList.append(m[0])
+        yTrue.append(trueMedicineList)
+    print str(yTrue).decode('string_escape')
+    print str(yPre).decode('string_escape')
+    precision, recall = naiveBayesDM.classification_evaluate(yTrue, yPre)
+    FileUtil.print_string('precision:' + str(precision), True)
+    FileUtil.print_string('recall:' + str(recall), True)
+    F1 = 2 * precision * recall / (precision + recall)
+    FileUtil.print_string('F1:' + str(F1), True)
+
