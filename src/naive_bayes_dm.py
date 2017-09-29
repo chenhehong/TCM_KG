@@ -1,13 +1,14 @@
 # -*- coding:utf-8 -*-
+import codecs
+import math
+
 from sklearn.cross_validation import KFold
+from src.util.file_util import FileUtil
 
 from src.datastore.mysql2neo4j import Mysql2Neo4j
-from src.datastore.neo4j_opt import Neo4jOpt
 from src.datastore.mysql_opt import MysqlOpt
-import math
-from sklearn import metrics
-from list_util import ListUtil
-from src.file_util import FileUtil
+from src.datastore.neo4j_opt import Neo4jOpt
+from src.util.list_util import ListUtil
 
 
 class NaiveBayesDM(object):
@@ -35,7 +36,7 @@ class NaiveBayesDM(object):
             trainList = []
             for i in trainIndex:
                 trainList.append(tidList[i])
-            # self.createGraph(filter=True,treamentIdfilterSet=set(trainList))
+            self.createGraph(filter=True,treamentIdfilterSet=set(trainList))
             yTrue = []
             yPre = []
             FileUtil.add_string(preFile,str(numFold)+'th validation:')
@@ -96,7 +97,7 @@ class NaiveBayesDM(object):
             interList = ListUtil.list_intersect(l)
             perPrecision = round(len(interList)*1.0/len(yPre[i]),5)
             perRecall = round(len(interList)*1.0/len(yTrue[i]),5)
-            FileUtil.print_string(str(i)+'th precision:'+str(perPrecision)+',recall:'+str(perRecall),True)
+            # FileUtil.print_string(str(i)+'th precision:'+str(perPrecision)+',recall:'+str(perRecall),True)
             totalPrecision+=perPrecision
             totalRecall+=perRecall
         precison = round(totalPrecision/testNum,5)
@@ -249,8 +250,17 @@ if __name__=='__main__':
     # naiveBayesDM.input_multiple_syptomes(['头痛','发热','鼻塞'],'红','白','浮')
     # naiveBayesDM.cross_validation()
 
-    with open('pre.txt','r') as f:
+    with open('../data/pre.txt','r') as f:
         pres = f.readlines()
+    idList = []
+    medicineList = []
+    with codecs.open('../data/symptom2medicine.txt', 'r', encoding='utf-8') as f:
+        for line in f:
+            splits = line.split("||")
+            medicines = splits[2].split(',')
+            idList.append(splits[0])
+            medicineList.append(medicines)
+
     yPre = []
     yTrue = []
     for pre in pres:
@@ -259,22 +269,13 @@ if __name__=='__main__':
         preMedicineList = preList[1].decode('utf-8').split(',')
         preMedicineList.pop()
         yPre.append(preMedicineList)
-        mysqlOpt = MysqlOpt()
-        perTreament = mysqlOpt.select('treatment', 'prescriptionId',
-                                      'id=' + testId)
-        pids = perTreament[0][0]
-        perPrecription = mysqlOpt.select('prescription', 'name', 'id = ' + str(pids))
-        mids = perPrecription[0][0]
-        medicines = mysqlOpt.select('medicine', 'name', 'id IN (' + mids + ')')
-        trueMedicineList = []
-        for m in medicines:
-            trueMedicineList.append(m[0])
-        yTrue.append(trueMedicineList)
+        index = idList.index(testId)
+        yTrue.append(medicineList[index])
     print str(yTrue).decode('string_escape')
     print str(yPre).decode('string_escape')
     precision, recall = naiveBayesDM.classification_evaluate(yTrue, yPre)
-    FileUtil.print_string('precision:' + str(precision), True)
-    FileUtil.print_string('recall:' + str(recall), True)
+    print('precision:' + str(precision), True)
+    print('recall:' + str(recall), True)
     F1 = 2 * precision * recall / (precision + recall)
-    FileUtil.print_string('F1:' + str(F1), True)
+    print('F1:' + str(F1), True)
 

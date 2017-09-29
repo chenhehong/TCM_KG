@@ -5,7 +5,7 @@ current_working_directory = "D:\Python\TCM_KG"
 sys.path.append(current_working_directory)
 from src.datastore.neo4j_opt import Neo4jOpt
 from src.datastore.mysql2neo4j import Mysql2Neo4j
-from src.list_util import ListUtil
+from src.util.list_util import ListUtil
 from operator import itemgetter
 import copy
 from src.base_data_query import BaseDataQuery

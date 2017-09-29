@@ -31,11 +31,12 @@ class Neo4jOpt(object):
     #属性添加用自带的创建函数
     '''
     def createNode(self, nodeType=[], properties={}):
-        return Node(*nodeType, **properties)
-                 
+        node = Node(*nodeType, **properties)
+        self.constructSubGraphInDB(node)
+
     def createRelationship(self, relationshipName, node1, node2,propertyDic={}):
-        return Relationship(node1, relationshipName, node2,**propertyDic)
-    
+        rel = Relationship(node1, relationshipName, node2,**propertyDic)
+        self.constructSubGraphInDB(rel)
     
     def unionSubGraphs(self, subGraphs):
         if len(subGraphs) <= 1:
@@ -67,7 +68,17 @@ class Neo4jOpt(object):
     
     '''
     query records from graph
-    ''' 
+    '''
+
+    def selectFirstNodeElementsFromDB(self, labels = None, condition = [], properties = {}):
+        if labels == None:
+            selected = self.selector.select().first()
+        else :
+            if properties == None:
+                selected = self.selector.select(labels).first()
+            else :
+                selected = self.selector.select(labels).where(*condition,**properties).first()
+        return selected
 
     def selectNodeElementsFromDB(self, labels = None, condition = [], properties = {}):
         '''
@@ -108,6 +119,16 @@ class Neo4jOpt(object):
         for rel in rels:
             relationships.append(rel)
         return relationships
+
+    def selectFirstRelationshipsFromDB(self, start_node = None, rel_type = None, end_node = None, bidirectional = False, limit = None):
+        relationships = []
+        rels = self.graph.match(start_node, rel_type, end_node, bidirectional, limit)
+        for rel in rels:
+            relationships.append(rel)
+        if(len(relationships)==0):
+            return None
+        else:
+            return relationships[0]
         
     '''
     update or delete elements from graph
@@ -203,33 +224,6 @@ class Neo4jOpt(object):
         n = self.graph.run("MATCH (a:teacher) where a.age = {x} RETURN a",x = 37)
         for node in n:
             print(node)
-
-    def addLink(self,path,startLabelName,endLabelName,relationName):
-        relation=[]
-        
-        f=open(path)
-        line=f.readline()
-        while line:
-            if len(line)>0:
-                startNodeName=line[:line.find('-->')]
-                endNodeName=line[line.find('-->')+3:line.find("{")]
-                pro={}
-                s=line[line.find("{")+1:line.find("}")]
-                print(s)
-                for i in s.split(','):
-                    j=i.split(':')
-                    pro[j[0]]=j[1]
-                snode=self.createNode([startLabelName], {'name':startNodeName})  
-                enode=self.createNode([endLabelName], {'name':endNodeName})
-                rel=self.createRelationship(relationName, snode, enode, pro)
-                relation.append(rel)
-                if len(relation)==100:
-                    print(relation)
-                    sub=self.unionSubGraphs(relation)
-                    self.constructSubGraphInDB(sub)
-                    relation=[]
-                line=f.readline()
-        f.close()
 
 if __name__ == '__main__':
     

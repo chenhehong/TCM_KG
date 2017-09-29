@@ -4,7 +4,7 @@
 '''
 from src.datastore.mysql_opt import MysqlOpt
 from src.datastore.neo4j_opt import Neo4jOpt
-from src.file_util import FileUtil
+from src.util.file_util import FileUtil
 
 
 class Mysql2Neo4j(object):
@@ -46,8 +46,7 @@ class Mysql2Neo4j(object):
             # print("输出id为%d的药物:%s"%(id,name.encode('utf8')))
             defaultTid = []
             defaultWeight = 0
-            node = neoDb.createNode([self.MEDICINETAG], {self.NODEID:id,self.NODENAME:name,self.NODEWEIGHT:defaultWeight,self.NODETID:defaultTid})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.MEDICINETAG], {self.NODEID:id,self.NODENAME:name,self.NODEWEIGHT:defaultWeight,self.NODETID:defaultTid})
         mysqlDb.close()
 
     def store_symptom(self,filter = False,filterSet = set([])):
@@ -62,8 +61,7 @@ class Mysql2Neo4j(object):
             name = unit[1]
             if(filter==True and id not in filterSet):
                 continue
-            node = neoDb.createNode([self.SYMPTOMTAG], {self.NODEID:id,self.NODENAME:name})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.SYMPTOMTAG], {self.NODEID:id,self.NODENAME:name})
         mysqlDb.close()
 
     def store_desease(self,filter = False,filterSet = set([])):
@@ -78,8 +76,7 @@ class Mysql2Neo4j(object):
             name = unit[1]
             if(filter==True and id not in filterSet):
                 continue
-            node = neoDb.createNode([self.DISEASETAG], {self.NODEID:id,self.NODENAME:name})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.DISEASETAG], {self.NODEID:id,self.NODENAME:name})
         mysqlDb.close()
 
     def store_pulse(self,filter = False,filterSet = set([])):
@@ -94,8 +91,7 @@ class Mysql2Neo4j(object):
             name = unit[1]
             if(filter==True and id not in filterSet):
                 continue
-            node = neoDb.createNode([self.PULSETAG], {self.NODEID:id,self.NODENAME:name})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.PULSETAG], {self.NODEID:id,self.NODENAME:name})
         mysqlDb.close()
 
     def store_tongue_tai(self,filter = False,filterSet = set([])):
@@ -110,8 +106,7 @@ class Mysql2Neo4j(object):
             name = unit[1]
             if(filter==True and id not in filterSet):
                 continue
-            node = neoDb.createNode([self.TONGUETAITAG], {self.NODEID:id,self.NODENAME:name})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.TONGUETAITAG], {self.NODEID:id,self.NODENAME:name})
         mysqlDb.close()
 
     def store_tongue_zhi(self,filter = False,filterSet = set([])):
@@ -126,8 +121,7 @@ class Mysql2Neo4j(object):
             name = unit[1]
             if(filter==True and id not in filterSet):
                 continue
-            node = neoDb.createNode([self.TONGUEZHITAG], {self.NODEID:id,self.NODENAME:name})
-            neoDb.constructSubGraphInDB(node)
+            neoDb.createNode([self.TONGUEZHITAG], {self.NODEID:id,self.NODENAME:name})
         mysqlDb.close()
 
     # 存储每个中药节点的出现的次数
@@ -206,8 +200,7 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.DISEASE2MEDICINETAG, diseaseNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
+                        neoDb.createRelationship(self.DISEASE2MEDICINETAG, diseaseNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
         mysqlDb.close()
 
     def store_symptom2medicine(self,filter = False,filterSet = set([])):
@@ -252,8 +245,7 @@ class Mysql2Neo4j(object):
                         else:
                             tids = [tid]
                             weight = 1
-                            rel = neoDb.createRelationship(self.SYMPTOM2MEDICINETAG, syptomeNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
-                            neoDb.constructSubGraphInDB(rel)
+                            neoDb.createRelationship(self.SYMPTOM2MEDICINETAG, syptomeNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
         mysqlDb.close()
 
     def store_pulse2medicine(self,filter = False,filterSet = set([])):
@@ -297,8 +289,7 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.PULSE2MEDICINETAG, pulseNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
+                        neoDb.createRelationship(self.PULSE2MEDICINETAG, pulseNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
         mysqlDb.close()
 
     def store_tonguetai2medicine(self,filter = False,filterSet = set([])):
@@ -342,8 +333,7 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.TONGUETAI2MEDICINETAG, tongueTaiNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
+                        neoDb.createRelationship(self.TONGUETAI2MEDICINETAG, tongueTaiNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
         mysqlDb.close()
 
     def store_tonguezhi2medicine(self,filter = False,filterSet = set([])):
@@ -387,8 +377,7 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.TONGUEZHI2MEDICINETAG, tongueZhiNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
+                        neoDb.createRelationship(self.TONGUEZHI2MEDICINETAG, tongueZhiNode, medicineNode, propertyDic={self.RELATIONTID: tids, self.RELATIONWEIGHT: weight})
         mysqlDb.close()
 
     def store_symptom2tonguezhi(self,filter = False,filterSet = set([])):
@@ -428,10 +417,9 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.SYMPTOM2TONGUEZHITAG, syptomeNode, tongueZhiNode,
+                        neoDb.createRelationship(self.SYMPTOM2TONGUEZHITAG, syptomeNode, tongueZhiNode,
                                                        propertyDic={self.RELATIONTID: tids,
                                                                     self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
         mysqlDb.close()
 
     def store_symptom2tonguetai(self,filter = False,filterSet = set([])):
@@ -470,10 +458,9 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.SYMPTOM2TONGUETAITAG, syptomeNode, tongueTaiNode,
+                        neoDb.createRelationship(self.SYMPTOM2TONGUETAITAG, syptomeNode, tongueTaiNode,
                                                        propertyDic={self.RELATIONTID: tids,
                                                                     self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
         mysqlDb.close()
 
 
@@ -513,10 +500,9 @@ class Mysql2Neo4j(object):
                     else:
                         tids = [tid]
                         weight = 1
-                        rel = neoDb.createRelationship(self.SYMPTOM2PULSETAG, syptomeNode, pulseNode,
+                        neoDb.createRelationship(self.SYMPTOM2PULSETAG, syptomeNode, pulseNode,
                                                        propertyDic={self.RELATIONTID: tids,
                                                                     self.RELATIONWEIGHT: weight})
-                        neoDb.constructSubGraphInDB(rel)
         mysqlDb.close()
 
     def get_medicine_class_num(self):
