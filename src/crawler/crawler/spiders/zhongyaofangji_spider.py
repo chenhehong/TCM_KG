@@ -3,9 +3,7 @@
 
 import scrapy
 from scrapy.selector import Selector
-from ..items import CrawlerItem
 import re
-import time
 
 class ZhongyaofangjiSpider(scrapy.spiders.Spider):
 
