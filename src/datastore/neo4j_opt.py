@@ -33,10 +33,12 @@ class Neo4jOpt(object):
     def createNode(self, nodeType=[], properties={}):
         node = Node(*nodeType, **properties)
         self.constructSubGraphInDB(node)
+        return node
 
     def createRelationship(self, relationshipName, node1, node2,propertyDic={}):
         rel = Relationship(node1, relationshipName, node2,**propertyDic)
         self.constructSubGraphInDB(rel)
+        return rel
     
     def unionSubGraphs(self, subGraphs):
         if len(subGraphs) <= 1:
