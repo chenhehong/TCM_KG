@@ -92,3 +92,4 @@ ENV/
 .idea/
 mysql_config.py
 data/
+model/
